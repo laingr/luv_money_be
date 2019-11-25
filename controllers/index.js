@@ -12,10 +12,10 @@ exports.createUser = auth.createUser;
 exports.newPool = async (req, res) => {
   console.log(req.body);
   try {
-    const pool = { user_id, name, frequency, due_date } = req.body;
-    console.log(pool);
+    // const pool = { user_id, name, frequency, due_date } = req.body;
+    // console.log(pool);
 
-    await models.pool.newPool(user, pool);
+    await models.pool.newPool(req.body.user_id, req.body);
     res.status(201);
     res.send();
   } catch (e) {
