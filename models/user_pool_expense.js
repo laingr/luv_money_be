@@ -2,15 +2,16 @@
 
 const db = require("../db");
 
-exports.newUserExpense = async (user, pool, expense) => {
+exports.newUserExpense = async (expense) => {
   try {
-    const insertPool = `INSERT INTO "pool"(name, frequency, due_date, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
-    const poolValues = [
-      `${pool.name}, ${pool.frequency}, ${pool.due_date}, CURRENT_TIMESTAMP`
+    const insertUserPoolExpense = `INSERT INTO 
+    "user_pool_expense"(pool_expense_id, user_id, name, date, amount) VALUES ($1, $2, $3, $4,$5)`;
+    const userPoolExpenseValues = [
+      expense.pool_expense_id, expense.user_id, expense.name, expense.date, expense.amount
     ];
-    await db.query(insertPool, poolValues);
-    console.log("Added pool");
+    await db.query(insertUserPoolExpense, userPoolExpenseValues);
+    console.log("Added expense");
   } catch (e) {
-    console.log(e, "Error adding new pool");
+    console.log(e, "Error adding new expense");
   }
 };
