@@ -11,7 +11,6 @@ const createUser = async (req, res) => {
     photoUrl
   } = req.body);
 
-  console.log(userInfo);
   await models.user.newUser(userInfo);
 
   const user = await admin.auth().createUser({
