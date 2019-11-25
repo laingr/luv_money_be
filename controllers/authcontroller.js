@@ -1,14 +1,17 @@
 const admin = require("firebase-service");
+const models = require("../models");
 
 const createUser = async (req, res) => {
-  const {
+  const userInfo = ({
     email,
     phoneNumber,
     password,
     firstName,
     lastName,
     photoUrl
-  } = req.body;
+  } = req.body);
+
+  await models.user.createUser(userInfo);
 
   const user = await admin.auth().createUser({
     email,
@@ -17,7 +20,6 @@ const createUser = async (req, res) => {
     displayName: `${firstName} ${lastName}`,
     photoURL: photoUrl
   });
-  await createuserinourdatabase;
 
   return res.send(user);
 };

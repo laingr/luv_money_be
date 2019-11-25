@@ -48,6 +48,7 @@ exports.build1 = () => {
       id SERIAL PRIMARY KEY,
       name VARCHAR(50) NOT NULL,
       email VARCHAR(355) UNIQUE NOT NULL,
+      photoURL VARCHAR(100),
       created_on TIMESTAMP NOT NULL)`,
     [],
     (err, res) => {
@@ -140,8 +141,12 @@ exports.build3 = async () => {
 };
 
 exports.build4 = async () => {
-  const insertUser = `INSERT INTO "user"(name, email, created_on) VALUES ($1, $2, CURRENT_TIMESTAMP)`;
-  const userValues = ["james", "jamessss@james.com"];
+  const insertUser = `INSERT INTO "user"(name, email, photoURL, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
+  const userValues = [
+    "james",
+    "jamessss@james.com",
+    "https://picsum.photos/200"
+  ];
   const insertPool = `INSERT INTO "pool"(name, frequency, due_date, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
   const poolValues = ["james pool", "Monthly", "12-12-12 12:12:12"];
   const insertUserPool = `INSERT INTO "user_pool"(user_id, pool_id) VALUES ($1, $2)`;
