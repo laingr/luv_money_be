@@ -1,6 +1,8 @@
 "use strict";
 
 const dotenv = require("dotenv").config();
+const firebase = require("./firebase");
+
 const db = require("./db");
 const models = require("./models");
 
