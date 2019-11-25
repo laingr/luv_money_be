@@ -3,8 +3,13 @@
 const auth = require("./authcontroller");
 const models = require("../models");
 
+///------USERS------///
+
 exports.createUser = auth.createUser;
-exports.createPool = async (req, res) => {
+
+///------POOLS------///
+
+exports.newPool = async (req, res) => {
   try {
     const pool = ({ user_id, name, frequency, due_date } = req.body);
     console.log(pool);
@@ -14,5 +19,51 @@ exports.createPool = async (req, res) => {
     res.send();
   } catch (e) {
     console.log(e, "Error making pool");
+  }
+};
+
+exports.getPools = async (req, res) => {
+  try {
+    // something
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
+///------EXPENSES------///
+
+exports.newExpense = async (req, res) => {
+  try {
+    // something
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
+///------SETTINGS------///
+
+exports.updateSettings = async (req, res) => {
+  try {
+    // something
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
+exports.getSettings = async (req, res) => {
+  try {
+    // something
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
+///------PAYMENT------///
+
+exports.newPayment = async (req, res) => {
+  try {
+    // something
+  } catch (e) {
+    console.log(e, "Error making something");
   }
 };
