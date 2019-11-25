@@ -1,4 +1,4 @@
-const admin = require("firebase-service");
+const admin = require("firebase-admin");
 const models = require("../models");
 
 const createUser = async (req, res) => {
@@ -11,7 +11,8 @@ const createUser = async (req, res) => {
     photoUrl
   } = req.body);
 
-  await models.user.createUser(userInfo);
+  console.log(userInfo);
+  await models.user.newUser(userInfo);
 
   const user = await admin.auth().createUser({
     email,
