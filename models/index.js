@@ -19,5 +19,7 @@ module.exports = {
   build,
   user,
   pool,
-  expense
+  pool_expense,
+  user_pool_expense,
+  user_pool_balance
 };

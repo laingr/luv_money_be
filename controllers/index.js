@@ -10,6 +10,7 @@ exports.createUser = auth.createUser;
 ///------POOLS------///
 
 exports.newPool = async (req, res) => {
+  console.log(req.body);
   try {
     const pool = ({ user_id, name, frequency, due_date } = req.body);
     console.log(pool);
