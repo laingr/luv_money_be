@@ -12,9 +12,6 @@ exports.createUser = auth.createUser;
 exports.newPool = async (req, res) => {
   console.log(req.body);
   try {
-    // const pool = { user_id, name, frequency, due_date } = req.body;
-    // console.log(pool);
-
     await models.pool.newPool(req.body.user_id, req.body);
     res.status(201);
     res.send();
@@ -35,13 +32,13 @@ exports.getPools = async (req, res) => {
 
 exports.newExpense = async (req, res) => {
   try {
-    const expense = {pool_expense_id, user_id, name, date, amount} = req.body;
-    console.log(expense);
+    // const expense = {pool_expense_id, user_id, name, date, amount} = req.body;
+    // console.log(expense);
 
-    await models.user_pool_expense.newUserExpense(expense)
+    await models.user_pool_expense.newUserExpense(req.body.user_id, req.body)
     
     res.status(201);
-    res.send(expense);
+    res.send();
   } catch (e) {
     console.log(e, "Error creating new Expense");
   }
