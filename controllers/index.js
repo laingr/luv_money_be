@@ -24,11 +24,10 @@ exports.newPool = async (req, res) => {
 
 exports.getPools = async (req, res) => {
   try {
-    // await res.send(db.query('select * FROM "pool"'));
-    // res.status(200)
-    // res.send();
-    db.query('select * FROM "pool"')
-    .then(res => console.log(res.rows))
+    const pool = await models.pool.getPools();
+    res.status(201);
+    res.json(pool);
+    
   } catch (e) {
     console.log(e, "Error making something");
   }

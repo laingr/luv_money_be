@@ -14,3 +14,14 @@ exports.newPool = async (user, pool) => {
     console.log(e, "Error adding new pool");
   }
 };
+
+exports.getPools = async (user,pool) => {
+  try {
+    const getAllPools = `SELECT * from "pool"`;
+    const pool = await db.query(getAllPools);
+    return pool.rows
+
+  } catch (e) {
+    console.log(e, "Error getting all pools");
+  }
+}
