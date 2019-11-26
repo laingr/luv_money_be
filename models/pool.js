@@ -34,8 +34,8 @@ exports.getPools = async (data) => {
     const userInfo = users.rows;
 
     //----------Get Balances----------//
-    const getUserBalancesQuery = `SELECT balances FROM "user_pool_balance" WHERE pool_id = $1 and user_id = $2 ORDER BY date DESC LIMIT 1`;
-    const getUserBalancesValues = [poolId, data.user_id];
+    const getUserBalancesQuery = `SELECT balances FROM "user_pool_balance" WHERE pool_id = $1 ORDER BY date DESC LIMIT 1`;
+    const getUserBalancesValues = [poolId];
     const balances = await db.query(getUserBalancesQuery, getUserBalancesValues);
     const balanceInfo = balances.rows[0].balances;
 

@@ -1,170 +1,147 @@
 "use strict";
 
 const db = require("../db");
-const moment = require("moment");
 
-exports.drop = () => {
-  db.query(`DROP TABLE IF EXISTS "user"`, [], (err, res) => {
-    if (err) {
-      return err;
-    }
-    console.log("dropped user");
-  });
-  db.query(`DROP TABLE IF EXISTS "pool"`, [], (err, res) => {
-    if (err) {
-      return err;
-    }
-    console.log("dropped pool");
-  });
-  db.query(`DROP TABLE IF EXISTS "user_pool"`, [], (err, res) => {
-    if (err) {
-      return err;
-    }
-    console.log("dropped user_pool");
-  });
-  db.query(`DROP TABLE IF EXISTS "pool_expense"`, [], (err, res) => {
-    if (err) {
-      return err;
-    }
-    console.log("dropped pool_expense");
-  });
-  db.query(`DROP TABLE IF EXISTS "user_pool_expense"`, [], (err, res) => {
-    if (err) {
-      return err;
-    }
-    console.log("dropped user_pool_expense");
-  });
-  db.query(`DROP TABLE IF EXISTS "user_pool_balance"`, [], (err, res) => {
-    if (err) {
-      return err;
-    }
-    console.log("dropped user_pool_balance");
-  });
+exports.drop = async () => {
+  await db.query(`DROP TABLE IF EXISTS "user_pool_balance"`, []);
+  console.log("dropped user_pool_balance");
+
+  await db.query(`DROP TABLE IF EXISTS "user_pool_expense"`, []);
+  console.log("dropped user_pool_expense");
+  
+  await db.query(`DROP TABLE IF EXISTS "pool_expense"`, []);
+  console.log("dropped pool_expense");
+  
+  await db.query(`DROP TABLE IF EXISTS "user_pool"`, []);
+  console.log("dropped user_pool");
+
+  await db.query(`DROP TABLE IF EXISTS "user"`, []);
+  console.log("dropped user");
+
+  await db.query(`DROP TABLE IF EXISTS "pool"`, []); 
+  console.log("dropped pool");
 };
 
-exports.build1 = () => {
-  db.query(
+exports.build = async () => {
+  await db.query(
     `CREATE TABLE "user"(
       id SERIAL PRIMARY KEY,
       name VARCHAR(50) NOT NULL,
       email VARCHAR(355) UNIQUE NOT NULL,
       photoURL VARCHAR(100),
       created_on TIMESTAMP NOT NULL)`,
-    [],
-    (err, res) => {
-      if (err) {
-        return err;
-      }
-      console.log("created user");
-    }
-  );
-  db.query(
+    []);
+  console.log("created user");
+
+  await db.query(
     `CREATE TABLE "pool"(
       id SERIAL PRIMARY KEY,
       name VARCHAR(50) NOT NULL,
       frequency VARCHAR(50) NOT NULL,
       due_date TIMESTAMP NOT NULL,
       created_on TIMESTAMP NOT NULL)`,
-    [],
-    (err, res) => {
-      if (err) {
-        return err;
-      }
-      console.log("created pool");
-    }
-  );
-};
+    []);
+  console.log("created pool");
 
-exports.build2 = () => {
-  db.query(
+  await db.query(
     `CREATE TABLE "user_pool"(
       user_id INTEGER,
       pool_id INTEGER,
       PRIMARY KEY (user_id, pool_id))`,
-    [],
-    (err, res) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log("created user_pool");
-    }
-  );
-  db.query(
+    []);
+  console.log("created user_pool");
+  
+  await db.query(
     `CREATE TABLE "pool_expense"(
-      id SERIAL PRIMARY KEY,
-      pool_id INTEGER REFERENCES pool(id),
-      name VARCHAR(50) NOT NULL,
-      rule INTEGER ARRAY)`,
-    [],
-    (err, res) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log("created pool_expense");
-    }
-  );
-  db.query(
-    `CREATE TABLE "user_pool_balance"(
-      pool_id INTEGER NOT NULL,
-      user_id INTEGER NOT NULL,
-      date TIMESTAMP NOT NULL,
-      PRIMARY KEY (pool_id, user_id, date),
-      balances DECIMAL(2) ARRAY)`,
-    [],
-    (err, res) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log("created user_pool_balance");
-    }
-  );
-};
+    id SERIAL PRIMARY KEY,
+    pool_id INTEGER REFERENCES pool(id),
+    name VARCHAR(50) NOT NULL,
+    rule INTEGER ARRAY)`,
+    []);
+  console.log("created pool_expense");
 
-exports.build3 = async () => {
-  // won't let reference to User_id to user table
+  await db.query(
+    `CREATE TABLE "user_pool_balance"(
+    pool_id INTEGER NOT NULL,
+    updated_by_user INTEGER NOT NULL,
+    date TIMESTAMP NOT NULL,
+    PRIMARY KEY (pool_id, date),
+    balances DECIMAL(6,2) ARRAY)`,
+    []);
+  console.log("created user_pool_balance");
+
   await db.query(
     `CREATE TABLE "user_pool_expense"(
-      id SERIAL PRIMARY KEY,
-      pool_expense_id INTEGER REFERENCES pool_expense(id),
-      user_id INTEGER,
-      name VARCHAR(50),
-      date TIMESTAMP,
-      amount SMALLINT)`,
-    [],
-    (err, res) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log("created user_pool_expense");
-    }
-  );
+    id SERIAL PRIMARY KEY,
+    pool_expense_id INTEGER REFERENCES pool_expense(id),
+    user_id INTEGER,
+    name VARCHAR(50),
+    date TIMESTAMP,
+    amount SMALLINT)`,
+    []);
+  console.log("created user_pool_expense");
 };
 
-exports.build4 = async () => {
+exports.populate = async () => {
+  //---INSERT DUMMY DATA---//
   const insertUser = `INSERT INTO "user"(name, email, photoURL, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
-  const userValues = [
+  const insertPool = `INSERT INTO "pool"(name, frequency, due_date, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
+  const insertUserPool = `INSERT INTO "user_pool"(user_id, pool_id) VALUES ($1, $2)`;
+  const insertPool_expense = `INSERT INTO "pool_expense"(pool_id, name, rule) VALUES ($1, $2, $3)`;
+  const insertUserPool_balance = `INSERT INTO "user_pool_balance"(pool_id, updated_by_user, date, balances) VALUES ($1, $2, CURRENT_TIMESTAMP, $3)`;
+  const insertUser_pool_expense = `INSERT INTO "user_pool_expense"(pool_expense_id, user_id, name, date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4)`;
+
+  const userValues1 = [
     "james",
     "jamessss@james.com",
     "https://picsum.photos/200"
   ];
-  const insertPool = `INSERT INTO "pool"(name, frequency, due_date, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
-  const poolValues = ["james pool", "Monthly", "12-12-12 12:12:12"];
-  const insertUserPool = `INSERT INTO "user_pool"(user_id, pool_id) VALUES ($1, $2)`;
-  const userPoolValues = ["1", "1"];
-  const insertPool_expense = `INSERT INTO "pool_expense"(pool_id, name, rule) VALUES ($1, $2, $3)`;
-  const pool_expenseValues = ["1", "Groceries", "{{1,45},{2,55}}"];
-  const insertUserPool_balance = `INSERT INTO "user_pool_balance"(pool_id, user_id, date, balances) VALUES ($1, $2, CURRENT_TIMESTAMP, $3)`;
-  const userPool_balanceValues = ["1", "2", "{{1,150},{2,-125}}"];
-  const insertUser_pool_expense = `INSERT INTO "user_pool_expense"(pool_expense_id, user_id, name, date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4)`;
-  const user_pool_expenseValues = ["1", "2", "Chiptole Run", "15"];
+  const userValues2 = [
+    "briana",
+    "briana@b.com",
+    "https://picsum.photos/200"
+  ];
+  const userValues3 = [
+    "vincent",
+    "v@jump.com",
+    "https://picsum.photos/200"
+  ];
+  const userValues4 = [
+    "anu",
+    "a@talk.com",
+    "https://picsum.photos/200"
+  ];
+  const poolValues1 = ['LuvMoney Pool', "Monthly", "12-20-19 12:00:00"];
+  const userPoolValues1 = ["1", "1"];
+  const userPoolValues2 = ["2", "1"];
+  const userPoolValues3 = ["3", "1"];
+  const userPoolValues4 = ["4", "1"];
+  const pool_expenseValues1 = ["1", "Groceries", "{{1,25},{2,25},{3,25},{4,25}}"];
+  const pool_expenseValues2 = ["1", "Netflix", "{{1,50},{2,50},{3,0},{4,0}}"];
+  const pool_expenseValues3 = ["1", "Gas", "{{1,10},{2,10},{3,30},{4,50}}"];
+  const user_pool_expenseValues1 = ["1", "3", "Vincent Grocery Run", "40"];
+  const user_pool_expenseValues2 = ["2", "1", "James Netflix Binging", "20"];
+  const user_pool_expenseValues3 = ["3", "4", "Anu loves Gas", "100"];
+  const userPool_balanceValues1 = ["1", "1", "{{1,-10},{2,-30},{3,0},{4,40}}"];
+
   try {
-    await db.query(insertUser, userValues);
-    await db.query(insertPool, poolValues);
-    await db.query(insertUserPool, userPoolValues);
-    await db.query(insertPool_expense, pool_expenseValues);
-    await db.query(insertUserPool_balance, userPool_balanceValues);
-    await db.query(insertUser_pool_expense, user_pool_expenseValues);
+    await db.query(insertUser, userValues1);
+    await db.query(insertUser, userValues2);
+    await db.query(insertUser, userValues3);
+    await db.query(insertUser, userValues4);
+    await db.query(insertPool, poolValues1);
+    await db.query(insertUserPool, userPoolValues1);
+    await db.query(insertUserPool, userPoolValues2);
+    await db.query(insertUserPool, userPoolValues3);
+    await db.query(insertUserPool, userPoolValues4);
+    await db.query(insertPool_expense, pool_expenseValues1);
+    await db.query(insertPool_expense, pool_expenseValues2);
+    await db.query(insertPool_expense, pool_expenseValues3);
+    await db.query(insertUserPool_balance, userPool_balanceValues1);
+    await db.query(insertUser_pool_expense, user_pool_expenseValues1);
+    await db.query(insertUser_pool_expense, user_pool_expenseValues2);
+    await db.query(insertUser_pool_expense, user_pool_expenseValues3);
   } catch (e) {
     console.log(e);
-  }
-};
+  };
+}
