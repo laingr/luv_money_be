@@ -9,21 +9,11 @@ const db = require("../db");
 
 exports.createUser = auth.createUser;
 
-exports.getUsers = async (req, res) => {
-  try {
-    const user = await models.user.getUsers();
-    res.status(201);
-    res.json(user);
-  } catch (e) {
-    console.log(e, "Error making something");
-  }
-};
-
 ///------POOLS------///
 
 exports.newPool = async (req, res) => {
   try {
-    await models.pool.newPool(req.body.user_id, req.body);
+    await models.pool.newPool(req.body);
     res.status(201);
     res.send();
   } catch (e) {
@@ -33,7 +23,7 @@ exports.newPool = async (req, res) => {
 
 exports.getPools = async (req, res) => {
   try {
-    const pool = await models.pool.getPools();
+    const pool = await models.pool.getPools(req.body);
     res.status(201);
     res.json(pool);
   } catch (e) {
@@ -58,7 +48,7 @@ exports.newExpense = async (req, res) => {
 
 exports.updateSettings = async (req, res) => {
   try {
-    await models.settings.updateSettings(req.body.user_id, req.body);
+    await models.settings.updateSettings(req.body);
     res.status(201);
     res.send();  } catch (e) {
     console.log(e, "Error updating Settings");

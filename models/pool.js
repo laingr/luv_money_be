@@ -2,7 +2,7 @@
 
 const db = require("../db");
 
-exports.newPool = async (user, pool) => {
+exports.newPool = async (pool) => {
   try {
     const insertPool = `INSERT INTO "pool"(name, frequency, due_date, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
     const poolValues = [
@@ -15,9 +15,10 @@ exports.newPool = async (user, pool) => {
   }
 };
 
-exports.getPools = async (user,pool) => {
+exports.getPools = async (data) => {
   try {
-    const getAllPools = `SELECT * from "pool"`;
+    const getAllPoolsQuery = `SELECT * from "pool" WHERE (SELECT id FROM "user" where id = ) AND pool_id = $2`;
+    const getAllPoolsValues = [data.user_id, data.pool_id];
     const pool = await db.query(getAllPools);
     return pool.rows
 
