@@ -2,6 +2,8 @@
 
 const auth = require("./authcontroller");
 const models = require("../models");
+const db = require("../db");
+
 
 ///------USERS------///
 
@@ -22,7 +24,11 @@ exports.newPool = async (req, res) => {
 
 exports.getPools = async (req, res) => {
   try {
-    // something
+    // await res.send(db.query('select * FROM "pool"'));
+    // res.status(200)
+    // res.send();
+    db.query('select * FROM "pool"')
+    .then(res => console.log(res.rows))
   } catch (e) {
     console.log(e, "Error making something");
   }
@@ -32,9 +38,6 @@ exports.getPools = async (req, res) => {
 
 exports.newExpense = async (req, res) => {
   try {
-    // const expense = {pool_expense_id, user_id, name, date, amount} = req.body;
-    // console.log(expense);
-
     await models.user_pool_expense.newUserExpense(req.body.user_id, req.body)
     
     res.status(201);
