@@ -5,6 +5,7 @@ const models = require("../models");
 const db = require("../db");
 
 
+
 ///------USERS------///
 
 exports.createUser = auth.createUser;
@@ -24,7 +25,7 @@ exports.newPool = async (req, res) => {
 exports.getPools = async (req, res) => {
   try {
     const pool = await models.pool.getPools(req.body);
-    res.status(201);
+    res.status(200);
     res.json(pool);
   } catch (e) {
     console.log(e, "Error making something");
