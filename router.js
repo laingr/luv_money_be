@@ -13,7 +13,8 @@ router.get("/pool", controllers.getPools);
 router.post("/expense", controllers.newExpense);
 router.put("/settings", controllers.updateSettings);
 router.get("/settings", controllers.getSettings);
-//hello
+
+
 // router.post("/payment", checkIfAuthenticated, controllers.newPayment);
 
 // router.get("/articles", checkIfAuthenticated, async (_, res) => {
