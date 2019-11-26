@@ -12,3 +12,14 @@ exports.newUser = async user => {
     console.log(e, "Error adding new user");
   }
 };
+
+exports.getUsers = async (user,pool) => {
+  try {
+    const getAllUsers = `SELECT * from "user"`;
+    const users = await db.query(getAllUsers);
+    return users.rows
+
+  } catch (e) {
+    console.log(e, "Error getting all users");
+  }
+}

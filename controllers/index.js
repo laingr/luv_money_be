@@ -9,6 +9,16 @@ const db = require("../db");
 
 exports.createUser = auth.createUser;
 
+exports.getUsers = async (req, res) => {
+  try {
+    const user = await models.user.getUsers();
+    res.status(201);
+    res.json(user);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
 ///------POOLS------///
 
 exports.newPool = async (req, res) => {
@@ -27,7 +37,6 @@ exports.getPools = async (req, res) => {
     const pool = await models.pool.getPools();
     res.status(201);
     res.json(pool);
-    
   } catch (e) {
     console.log(e, "Error making something");
   }
