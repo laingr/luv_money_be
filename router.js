@@ -7,7 +7,6 @@ const { checkIfAuthenticated } = require("./middlewares");
 const router = express.Router();
 
 router.post("/auth/signup", controllers.createUser);
-router.get("/users", controllers.getUsers)
 router.post("/pool", controllers.newPool);
 router.get("/pool", controllers.getPools);
 router.post("/expense", controllers.newExpense);

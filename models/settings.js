@@ -2,7 +2,7 @@
 
 const db = require("../db");
 
-exports.updateSettings = async (user, pool) => {
+exports.updateSettings = async (pool) => {
   try {
     const updateFrequencey = `UPDATE "pool" SET frequency = $1, due_date = $2 WHERE id = $3`;
     const frequencyValue = [ 
@@ -15,10 +15,11 @@ exports.updateSettings = async (user, pool) => {
   }
 };
 
-exports.getSettings = async (user,pool) => {
+exports.getSettings = async (pool) => {
   try {
-    const getAllSettings = `SELECT id, frequency, due_date from "pool"`;
-    const settings = await db.query(getAllSettings);
+    const getAllSettings = `SELECT id, frequency, due_date FROM "pool" WHERE id = $1`;
+    const getAllSettingsValues = [pool.id];
+    const settings = await db.query(getAllSettings, getAllSettingsValues);
     return settings
 
   } catch (e) {
