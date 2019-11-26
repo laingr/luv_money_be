@@ -107,9 +107,9 @@ exports.build2 = () => {
     `CREATE TABLE "user_pool_balance"(
       pool_id INTEGER NOT NULL,
       user_id INTEGER NOT NULL,
-      PRIMARY KEY (pool_id, user_id),
       date TIMESTAMP NOT NULL,
-      balances INTEGER ARRAY)`,
+      PRIMARY KEY (pool_id, user_id, date),
+      balances DECIMAL(2) ARRAY)`,
     [],
     (err, res) => {
       if (err) {

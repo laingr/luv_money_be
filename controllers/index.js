@@ -22,7 +22,6 @@ exports.getUsers = async (req, res) => {
 ///------POOLS------///
 
 exports.newPool = async (req, res) => {
-  console.log(req.body);
   try {
     await models.pool.newPool(req.body.user_id, req.body);
     res.status(201);
@@ -46,10 +45,10 @@ exports.getPools = async (req, res) => {
 
 exports.newExpense = async (req, res) => {
   try {
-    await models.user_pool_expense.newUserExpense(req.body.user_id, req.body)
-    
+    await models.user_pool_expense.newUserExpense(req.body);
+    await models.user_pool_balance.balance(req.body);
     res.status(201);
-    res.send();
+    res.send(req.body);
   } catch (e) {
     console.log(e, "Error creating new Expense");
   }
