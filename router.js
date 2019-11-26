@@ -11,8 +11,8 @@ router.get("/users", controllers.getUsers)
 router.post("/pool", controllers.newPool);
 router.get("/pool", controllers.getPools);
 router.post("/expense", controllers.newExpense);
-// router.put("/settings", checkIfAuthenticated, controllers.updateSettings);
-// router.get("/settings", checkIfAuthenticated, controllers.getSettings);
+router.put("/settings", controllers.updateSettings);
+router.get("/settings", controllers.getSettings);
 // router.post("/payment", checkIfAuthenticated, controllers.newPayment);
 
 // router.get("/articles", checkIfAuthenticated, async (_, res) => {

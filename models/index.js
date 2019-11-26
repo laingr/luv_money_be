@@ -7,6 +7,7 @@ const pool = require("./pool");
 const pool_expense = require("./pool_expense");
 const user_pool_expense = require("./user_pool_expense");
 const user_pool_balance = require("./user_pool_balance");
+const settings = require("./settings")
 
 // build.drop();
 // build.build1();
@@ -21,5 +22,6 @@ module.exports = {
   pool,
   pool_expense,
   user_pool_expense,
-  user_pool_balance
+  user_pool_balance,
+  settings
 };

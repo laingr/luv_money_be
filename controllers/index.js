@@ -59,17 +59,19 @@ exports.newExpense = async (req, res) => {
 
 exports.updateSettings = async (req, res) => {
   try {
-    // something
-  } catch (e) {
-    console.log(e, "Error making something");
+    await models.settings.updateSettings(req.body.user_id, req.body);
+    res.status(201);
+    res.send();  } catch (e) {
+    console.log(e, "Error updating Settings");
   }
 };
 
 exports.getSettings = async (req, res) => {
   try {
-    // something
-  } catch (e) {
-    console.log(e, "Error making something");
+    const settings = await models.settings.getSettings();
+    res.status(201);
+    res.json(settings);  } catch (e) {
+    console.log(e, "Error getting the Settings");
   }
 };
 
