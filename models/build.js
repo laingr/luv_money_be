@@ -29,6 +29,7 @@ exports.build = async () => {
   await db.query(
     `CREATE TABLE "user"(
       id SERIAL PRIMARY KEY,
+      uid VARCHAR(100) NOT NULL,
       name VARCHAR(50) NOT NULL,
       email VARCHAR(355) UNIQUE NOT NULL,
       photoURL VARCHAR(100),
@@ -92,14 +93,15 @@ exports.build = async () => {
     user_id INTEGER,
     name VARCHAR(50),
     date TIMESTAMP,
-    amount SMALLINT)`,
+    amount SMALLINT,
+    user_adjusted DECIMAL(6,2) ARRAY)`,
     []);
   console.log("created user_pool_expense");
 };
 
 exports.populate = async () => {
   //---INSERT DUMMY DATA---//
-  const insertUser = `INSERT INTO "user"(name, email, photoURL, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
+  const insertUser = `INSERT INTO "user"(uid, name, email, photoURL, created_on) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)`;
   const insertPool = `INSERT INTO "pool"(name, frequency, due_date, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
   const insertUserPool = `INSERT INTO "user_pool"(user_id, pool_id) VALUES ($1, $2)`;
   const insertPool_expense = `INSERT INTO "pool_expense"(pool_id, name, rule) VALUES ($1, $2, $3)`;
@@ -108,21 +110,25 @@ exports.populate = async () => {
   const insertUser_pool_expense = `INSERT INTO "user_pool_expense"(pool_expense_id, user_id, name, date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4)`;
 
   const userValues1 = [
+    "y4Ac7s3VPddxkAnUOo5HA977d7x1",
     "james",
     "jamessss@james.com",
     "https://picsum.photos/200"
   ];
   const userValues2 = [
+    "y4Ac7s3VPddxkAnUOo5HA977d7x2",
     "briana",
     "briana@b.com",
     "https://picsum.photos/200"
   ];
   const userValues3 = [
+    "y4Ac7s3VPddxkAnUOo5HA977d7x4",
     "vincent",
     "v@jump.com",
     "https://picsum.photos/200"
   ];
   const userValues4 = [
+    "y4Ac7s3VPddxkAnUOo5HA977d7x6",
     "anu",
     "a@talk.com",
     "https://picsum.photos/200"
