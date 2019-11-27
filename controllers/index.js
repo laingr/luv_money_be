@@ -25,7 +25,6 @@ exports.newPool = async (req, res) => {
 
 exports.getPools = async (req, res) => {
   try {
-    console.log(req.query);
     const pool = await models.pool.getPools(req.query);
     res.status(200);
     res.json(pool);
@@ -39,7 +38,8 @@ exports.getPools = async (req, res) => {
 exports.newExpense = async (req, res) => {
   try {
     await models.user_pool_expense.newUserExpense(req.body);
-    await models.user_pool_balance.balance(req.body);
+    const adjustments = await models.user_pool_balance.balance(req.body);
+    await models.user_pool_expense.balancedUserExpense(req.body, adjustments);
     res.status(201);
     res.send(req.body);
   } catch (e) {

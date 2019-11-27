@@ -15,3 +15,14 @@ exports.newUserExpense = async (expense) => {
     console.log(e, "Error adding new expense");
   }
 };
+
+exports.balancedUserExpense = async (expense, adjustments) => {
+  try {
+    const updateExpenseQuery = `UPDATE "user_pool_expense" SET user_adjusted = $1 WHERE pool_expense_id = $2 AND user_id = $3 AND name = $4 AND date = $5 AND amount = $6`;
+    const updateExpenseValues = [adjustments, expense.pool_expense_id, expense.user_id, expense.name, expense.date, expense.amount];
+    await db.query(updateExpenseQuery, updateExpenseValues);
+    console.log("Expense updated");
+  } catch (e) {
+    console.log(e, "Error updating expense");
+  }
+};

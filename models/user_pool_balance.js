@@ -20,6 +20,7 @@ exports.balance = async (expense) => {
     //------Map Added Expense to New Rule------//
     const adjustments = appliedRules.map(el => el[1]*expense.amount*.01);
     const newBalances = [];
+    const adjustedExpense = [];
 
     //------Match Balance with Rule and Update Balance------//
     for (let i=0;i<appliedRules.length;i++){
@@ -27,6 +28,7 @@ exports.balance = async (expense) => {
         if (appliedRules[i][0] === balances[y][0]) {
           let newBal = parseFloat(balances[i][1])+parseFloat(adjustments[y]);
           newBalances.push([appliedRules[i][0],newBal]);
+          adjustedExpense.push([appliedRules[i][0],parseFloat(adjustments[y])]);
         }
       }
     };
@@ -35,6 +37,7 @@ exports.balance = async (expense) => {
     const newBalanceValues = [expense.pool_id, expense.user_id,newBalances];
     const updatedBalances = await db.query(balanceStatement, newBalanceValues);
     console.log("balances updated to pool with", newBalances);
+    return adjustedExpense;
   } catch (e) {
     console.log(e, "Error adding new pool");
   }

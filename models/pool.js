@@ -18,10 +18,11 @@ exports.newPool = async (pool) => {
 exports.getPools = async (data) => {
   try {
     //----------Get User Pool Info----------//
-    const getUserPoolsQuery = `SELECT pool_id from "user_pool" WHERE user_id = $1 ORDER BY 1 DESC LIMIT 1`;
-    const getUserPoolsValues = [data.user_id];
+    const getUserPoolsQuery = `SELECT u.id, pool_id from "user_pool" up JOIN "user" u ON up.user_id = u.id WHERE u.uid = $1 ORDER BY 1 DESC LIMIT 1`;
+    const getUserPoolsValues = [data.uid];
     const user_pool = await db.query(getUserPoolsQuery, getUserPoolsValues);
     const poolId = user_pool.rows[0].pool_id;
+    const userId = user_pool.rows[0].id;
     
     //----------Get User Info----------//
     const getUserQuery = `
@@ -41,13 +42,13 @@ exports.getPools = async (data) => {
 
     //----------Get Recent Statement----------//
     const getUserStatementQuery = `SELECT user_id, pool_id, statement_date, due_date, paid_date, amount FROM "user_pool_statement" WHERE pool_id = $1 and user_id = $2 ORDER BY statement_date DESC LIMIT 1`;
-    const getUserStatementValues = [poolId, data.user_id];
+    const getUserStatementValues = [poolId, userId];
     const statement = await db.query(getUserStatementQuery, getUserStatementValues);
     const statementInfo = statement.rows[0].balances;
 
     //----------Get Pool Info----------//
     const getPoolQuery = `
-    SELECT pe.name as category, upe.name as expense, upe.user_id, upe.date, upe.amount 
+    SELECT pe.name as category, upe.name as expense, upe.user_id, upe.date, upe.amount, upe.user_adjusted
     FROM "pool_expense" pe 
     JOIN "user_pool_expense" upe on pe.id = upe.pool_expense_id
     WHERE pe.pool_id = $1`;
