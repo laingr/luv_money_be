@@ -39,6 +39,12 @@ exports.getPools = async (data) => {
     const balances = await db.query(getUserBalancesQuery, getUserBalancesValues);
     const balanceInfo = balances.rows[0].balances;
 
+    //----------Get Recent Statement----------//
+    const getUserStatementQuery = `SELECT user_id, pool_id, statement_date, due_date, paid_date, amount FROM "user_pool_statement" WHERE pool_id = $1 and user_id = $2 ORDER BY date DESC LIMIT 1`;
+    const getUserStatementValues = [poolId, data.user_id];
+    const statement = await db.query(getUserStatementQuery, getUserStatementValues);
+    const statementInfo = statement.rows[0].balances;
+
     //----------Get Pool Info----------//
     const getPoolQuery = `
     SELECT pe.name as category, upe.name as expense, upe.user_id, upe.date, upe.amount 
@@ -52,6 +58,7 @@ exports.getPools = async (data) => {
     const dataSet = {
       userInfo,
       balanceInfo,
+      statementInfo,
       poolInfo
     };
     return dataSet;
