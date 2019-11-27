@@ -7,11 +7,11 @@ const { checkIfAuthenticated } = require("./middlewares");
 const router = express.Router();
 
 router.post("/auth/signup", controllers.createUser);
-router.post("/pool", controllers.newPool);
-router.get("/pool", controllers.getPools);
-router.post("/expense", controllers.newExpense);
-router.put("/settings", controllers.updateSettings);
-router.get("/settings", controllers.getSettings);
+router.post("/pool", checkIfAuthenticated, controllers.newPool);
+router.get("/pool", checkIfAuthenticated, controllers.getPools);
+router.post("/expense", checkIfAuthenticated, controllers.newExpense);
+router.put("/settings", checkIfAuthenticated, controllers.updateSettings);
+router.post("/statement", checkIfAuthenticated, controllers.payment);
 
 
 // router.post("/payment", checkIfAuthenticated, controllers.newPayment);

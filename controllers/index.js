@@ -1,6 +1,7 @@
 "use strict";
 
 const auth = require("./authcontroller");
+const statements = require("./statements");
 const models = require("../models");
 const db = require("../db");
 
@@ -24,7 +25,7 @@ exports.newPool = async (req, res) => {
 
 exports.getPools = async (req, res) => {
   try {
-    const pool = await models.pool.getPools(req.body);
+    const pool = await models.pool.getPools(req.query);
     res.status(200);
     res.json(pool);
   } catch (e) {

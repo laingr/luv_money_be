@@ -1,11 +1,11 @@
-const admin = require("firebase-service");
+const admin = require("../firebase");
 
 const getAuthToken = (req, res, next) => {
   if (
-    req.headers.authorization &&
-    req.headers.authorization.split(" ")[0] === "Bearer"
+    req.headers.authtoken &&
+    req.headers.authtoken.split(" ")[0] === "Bearer"
   ) {
-    req.authToken = req.headers.authorization.split(" ")[1];
+    req.authToken = req.headers.authtoken.split(" ")[1];
   } else {
     req.authToken = null;
   }
@@ -15,7 +15,7 @@ const getAuthToken = (req, res, next) => {
 const checkIfAuthenticated = (req, res, next) => {
   getAuthToken(req, res, async () => {
     try {
-      const { authToken } = req;
+      const authToken = req.authToken;
       const userInfo = await admin.auth().verifyIdToken(authToken);
       req.authId = userInfo.uid;
       return next();
