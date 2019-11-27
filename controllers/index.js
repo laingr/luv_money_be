@@ -25,6 +25,7 @@ exports.newPool = async (req, res) => {
 
 exports.getPools = async (req, res) => {
   try {
+    console.log(req.query);
     const pool = await models.pool.getPools(req.query);
     res.status(200);
     res.json(pool);
