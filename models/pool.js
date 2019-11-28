@@ -34,6 +34,24 @@ exports.getPools = async (data) => {
     const users = await db.query(getUserQuery, getUserValues);
     const userInfo = users.rows;
 
+    //----------Get Pool Settings Info----------//
+    const getPoolSettingsQuery = `
+      SELECT *
+      FROM "pool"
+      WHERE id = $1`;
+    const getPoolSettingsValues = [poolId];
+    const poolSettings = await db.query(getPoolSettingsQuery, getPoolSettingsValues);
+    const poolSettingsInfo = poolSettings.rows;
+
+    //----------Get Pool Rule Settings Info----------//
+    const getPoolRuleSettingsQuery = `
+      SELECT *
+      FROM "pool_expense"
+      WHERE pool_id = $1`;
+    const getPoolRuleSettingsValues = [poolId];
+    const poolRuleSettings = await db.query(getPoolRuleSettingsQuery, getPoolRuleSettingsValues);
+    const poolRuleSettingsInfo = poolRuleSettings.rows;
+
     //----------Get Balances----------//
     const getUserBalancesQuery = `SELECT balances FROM "user_pool_balance" WHERE pool_id = $1 ORDER BY date DESC LIMIT 1`;
     const getUserBalancesValues = [poolId];
@@ -41,10 +59,10 @@ exports.getPools = async (data) => {
     const balanceInfo = balances.rows[0].balances;
 
     //----------Get Recent Statement----------//
-    const getUserStatementQuery = `SELECT user_id, pool_id, statement_date, due_date, paid_date, amount FROM "user_pool_statement" WHERE pool_id = $1 and user_id = $2 ORDER BY statement_date DESC LIMIT 1`;
+    const getUserStatementQuery = `SELECT user_id, pool_id, statement_date, due_date, paid_date, amount FROM "user_pool_statement" WHERE pool_id = $1 and user_id = $2 ORDER BY statement_date DESC`;
     const getUserStatementValues = [poolId, userId];
     const statement = await db.query(getUserStatementQuery, getUserStatementValues);
-    const statementInfo = statement.rows[0].balances;
+    const statementInfo = statement.rows;
 
     //----------Get Pool Info----------//
     const getPoolQuery = `
@@ -60,7 +78,9 @@ exports.getPools = async (data) => {
       userInfo,
       balanceInfo,
       statementInfo,
-      poolInfo
+      poolInfo,
+      poolSettingsInfo,
+      poolRuleSettingsInfo
     };
     return dataSet;
 
