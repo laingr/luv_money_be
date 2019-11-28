@@ -76,3 +76,14 @@ exports.newPayment = async (req, res) => {
     console.log(e, "Error making something");
   }
 };
+
+///------RULE------///
+
+exports.newRule = async (req, res) => {
+  try {
+    console.log([req.body.payload.name]);
+    res.json([req.body.payload]);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
