@@ -78,12 +78,13 @@ exports.build = async () => {
 
   await db.query(
     `CREATE TABLE "user_pool_statement"(
+    id SERIAL NOT NULL,
     pool_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     statement_date TIMESTAMP NOT NULL,
     due_date TIMESTAMP NOT NULL,
     paid_date TIMESTAMP,
-    PRIMARY KEY (pool_id, user_id, statement_date),
+    PRIMARY KEY (id, pool_id, user_id, statement_date),
     amount DECIMAL(6,2))`,
     []);
   console.log("created user_pool_statement");

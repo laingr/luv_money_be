@@ -2,15 +2,17 @@
 
 const db = require("../db");
 
-exports.newExpense = async (user, pool) => {
+exports.newRule = async (payload) => {
   try {
-    const insertPool = `INSERT INTO "pool"(name, frequency, due_date, created_on) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`;
-    const poolValues = [
-      `${pool.name}, ${pool.frequency}, ${pool.due_date}, CURRENT_TIMESTAMP`
+    const array = '{' + Object.entries(payload[0].rule).map(arr => `{${arr[0]},${arr[1]}}`).join() + '}'
+    const insertRule = `INSERT INTO "pool_expense"(pool_id, name, rule) VALUES ($1, $2, $3)`;
+    const ruleValues = [
+      payload[0].pool_id, payload[0].name, array
     ];
-    await db.query(insertPool, poolValues);
-    console.log("Added pool");
+    console.log(array);
+    await db.query(insertRule, ruleValues);
+    console.log("Added pool rule");
   } catch (e) {
-    console.log(e, "Error adding new pool");
+    console.log(e, "Error adding new pool rule");
   }
 };

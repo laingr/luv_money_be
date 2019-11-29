@@ -81,8 +81,19 @@ exports.newPayment = async (req, res) => {
 
 exports.newRule = async (req, res) => {
   try {
-    console.log([req.body.payload.name]);
-    res.json([req.body.payload]);
+    const rule = await models.pool_expense.newRule([req.body.payload]);
+    res.json(rule);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
+///------STATEMENT------///
+
+exports.getStatement = async (req, res) => {
+  try {
+    const statement = await models.user_pool_statement.getStatement(req.query);
+    res.json(statement);
   } catch (e) {
     console.log(e, "Error making something");
   }
