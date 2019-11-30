@@ -33,15 +33,25 @@ exports.getPools = async (req, res) => {
   }
 };
 
+exports.getBE = async (req, res) => {
+  try {
+    const BE = await models.pool.getBE(req.query);
+    res.status(200);
+    res.json(BE);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
 ///------EXPENSES------///
 
 exports.newExpense = async (req, res) => {
   try {
-    await models.user_pool_expense.newUserExpense(req.body);
-    const adjustments = await models.user_pool_balance.balance(req.body);
-    await models.user_pool_expense.balancedUserExpense(req.body, adjustments);
+    await models.user_pool_expense.newUserExpense(req.body.payload);
+    const adjustments = await models.user_pool_balance.balance(req.body.payload);
+    await models.user_pool_expense.balancedUserExpense(req.body.payload, adjustments);
     res.status(201);
-    res.send(req.body);
+    res.json();
   } catch (e) {
     console.log(e, "Error creating new Expense");
   }
