@@ -9,7 +9,7 @@ const user_pool_expense = require("./user_pool_expense");
 const user_pool_balance = require("./user_pool_balance");
 const settings = require("./settings");
 const user_pool_statement = require('./user_pool_statement');
-
+const paid_user_pool_balance = require('./paid_user_pool_balance')
 
 module.exports = {
   db,
@@ -20,5 +20,6 @@ module.exports = {
   user_pool_expense,
   user_pool_balance,
   settings,
-  user_pool_statement
+  user_pool_statement,
+  paid_user_pool_balance
 };

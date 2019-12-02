@@ -2,7 +2,7 @@
 
 const auth = require("./authcontroller");
 const statements = require("./statements");
-const models = require("../models");
+const models = require('../models');
 const db = require("../db");
 
 
@@ -70,6 +70,7 @@ exports.updateSettings = async (req, res) => {
 
 exports.getSettings = async (req, res) => {
   try {
+
     const settings = await models.settings.getSettings();
     res.status(201);
     res.json(settings);  } catch (e) {
@@ -81,9 +82,13 @@ exports.getSettings = async (req, res) => {
 
 exports.newPayment = async (req, res) => {
   try {
-    // something
+    console.log('pay me bitch')
+    const adjustments =  await models.paid_user_pool_balance.newPayment(req.body.payload);
+    // await models.user_pool_expense.balancedUserExpense(req.body, adjustments);
+    res.status(201);
+    res.send(adjustments);  
   } catch (e) {
-    console.log(e, "Error making something");
+    console.log(e, "Error making payment");
   }
 };
 
@@ -91,6 +96,7 @@ exports.newPayment = async (req, res) => {
 
 exports.newRule = async (req, res) => {
   try {
+    
     const rule = await models.pool_expense.newRule([req.body.payload]);
     res.json(rule);
   } catch (e) {
