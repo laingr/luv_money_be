@@ -9,7 +9,6 @@ exports.newRule = async (payload) => {
     const ruleValues = [
       payload[0].pool_id, payload[0].name, array
     ];
-    console.log(array);
     await db.query(insertRule, ruleValues);
     console.log("Added pool rule");
   } catch (e) {
