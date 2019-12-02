@@ -98,12 +98,39 @@ exports.newRule = async (req, res) => {
   }
 };
 
+exports.editRule = async (req, res) => {
+  try {
+    const rule = await models.pool_expense.updateRule([req.body.payload]);
+    res.json(rule);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
 ///------STATEMENT------///
 
-exports.getStatement = async (req, res) => {
+exports.getPopUp = async (req,res) => {
+  if(req.query.type === 'rule') {
+    getRule(req,res)
+  } else {
+    console.log('statement');
+    getStatement(req,res)
+  }
+}
+
+const getStatement = async (req, res) => {
   try {
     const statement = await models.user_pool_statement.getStatement(req.query);
     res.json(statement);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
+const getRule = async (req, res) => {
+  try {
+    const rule = await models.pool_expense.getRule(req.query);
+    res.json(rule);
   } catch (e) {
     console.log(e, "Error making something");
   }
