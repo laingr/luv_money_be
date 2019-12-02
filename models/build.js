@@ -164,9 +164,9 @@ exports.populate = async () => {
   const user_pool_expenseValues3 = ["3", "4", "1", "Anu loves Gas", "100"];
   const userPool_balanceValues1 = ["1", "1", "{{1,-10},{2,-30},{3,0},{4,40}}"];
   const user_pool_statementValues1 = ["1", "1", "1", "-10"];
-  const user_pool_statementValues2 = ["1", "1", "2", "-30"];
-  const user_pool_statementValues3 = ["1", "1", "3", "0"];
-  const user_pool_statementValues4 = ["1", "1", "4", "40"];
+  const user_pool_statementValues2 = ["1", "2", "1", "-30"];
+  const user_pool_statementValues3 = ["1", "3", "1", "0"];
+  const user_pool_statementValues4 = ["1", "4", "1", "40"];
 
   try {
     await db.query(insertUser, userValues1);
