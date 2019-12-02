@@ -86,6 +86,7 @@ exports.build = async () => {
     `CREATE TABLE "user_pool_statement"(
     id SERIAL NOT NULL,
     pool_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
     status VARCHAR NOT NULL,
     statement_date TIMESTAMP NOT NULL,
     due_date TIMESTAMP NOT NULL,
@@ -123,7 +124,7 @@ exports.populate = async () => {
   const insertUserPool = `INSERT INTO "user_pool"(user_id, pool_id) VALUES ($1, $2)`;
   const insertPool_expense = `INSERT INTO "pool_expense"(pool_id, name, rule) VALUES ($1, $2, $3)`;
   const insertUserPool_balance = `INSERT INTO "user_pool_balance"(pool_id, updated_by_user, date, balances) VALUES ($1, $2, CURRENT_TIMESTAMP, $3)`;
-  const insertPool_statement = `INSERT INTO "pool_statement"(pool_id, status, statement_date, due_date, paid_date, amount) VALUES ($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + interval'7 days', NULL, $3)`;
+  const insertUser_pool_statement = `INSERT INTO "user_pool_statement"(pool_id, user_id, status, statement_date, due_date, paid_date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + interval'7 days', NULL, $4)`;
   const insertUser_pool_expense = `INSERT INTO "user_pool_expense"(pool_expense_id, user_id, statement_id, name, date, amount) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP, $5)`;
 
   const userValues1 = [
@@ -162,10 +163,10 @@ exports.populate = async () => {
   const user_pool_expenseValues2 = ["2", "1", "1", "James Netflix Binging", "20"];
   const user_pool_expenseValues3 = ["3", "4", "1", "Anu loves Gas", "100"];
   const userPool_balanceValues1 = ["1", "1", "{{1,-10},{2,-30},{3,0},{4,40}}"];
-  const pool_statementValues1 = ["1", "1", "-10"];
-  const pool_statementValues2 = ["1", "2", "-30"];
-  const pool_statementValues3 = ["1", "3", "0"];
-  const pool_statementValues4 = ["1", "4", "40"];
+  const user_pool_statementValues1 = ["1", "1", "1", "-10"];
+  const user_pool_statementValues2 = ["1", "1", "2", "-30"];
+  const user_pool_statementValues3 = ["1", "1", "3", "0"];
+  const user_pool_statementValues4 = ["1", "1", "4", "40"];
 
   try {
     await db.query(insertUser, userValues1);
@@ -181,10 +182,10 @@ exports.populate = async () => {
     await db.query(insertPool_expense, pool_expenseValues2);
     await db.query(insertPool_expense, pool_expenseValues3);
     await db.query(insertUserPool_balance, userPool_balanceValues1);
-    await db.query(insertPool_statement, pool_statementValues1);
-    await db.query(insertPool_statement, pool_statementValues2);
-    await db.query(insertPool_statement, pool_statementValues3);
-    await db.query(insertPool_statement, pool_statementValues4);
+    await db.query(insertUser_pool_statement, user_pool_statementValues1);
+    await db.query(insertUser_pool_statement, user_pool_statementValues2);
+    await db.query(insertUser_pool_statement, user_pool_statementValues3);
+    await db.query(insertUser_pool_statement, user_pool_statementValues4);
     await db.query(insertUser_pool_expense, user_pool_expenseValues1);
     await db.query(insertUser_pool_expense, user_pool_expenseValues2);
     await db.query(insertUser_pool_expense, user_pool_expenseValues3);
