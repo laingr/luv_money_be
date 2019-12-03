@@ -48,7 +48,8 @@ exports.build = async () => {
       admin_id VARCHAR(50) NOT NULL,
       name VARCHAR(50) NOT NULL,
       frequency VARCHAR(50) NOT NULL,
-      current_statement INTEGER NOT NULL,
+      current_statement INTEGER,
+      next_statement INTEGER,
       next_statement_date TIMESTAMP NOT NULL,
       grace_period VARCHAR(20) NOT NULL,
       due_date TIMESTAMP NOT NULL,
@@ -160,9 +161,9 @@ exports.populate = async () => {
   const pool_expenseValues1 = ["1", "Groceries", "{{1,25},{2,25},{3,25},{4,25}}"];
   const pool_expenseValues2 = ["1", "Netflix", "{{1,50},{2,50},{3,0},{4,0}}"];
   const pool_expenseValues3 = ["1", "Gas", "{{1,10},{2,10},{3,30},{4,50}}"];
-  const user_pool_expenseValues1 = ["1", "3", "1", "Vincent Grocery Run", "40"];
-  const user_pool_expenseValues2 = ["2", "1", "1", "James Netflix Binging", "20"];
-  const user_pool_expenseValues3 = ["3", "4", "1", "Anu loves Gas", "100"];
+  const user_pool_expenseValues1 = ["1", "3", "4", "Vincent Grocery Run", "40"];
+  const user_pool_expenseValues2 = ["2", "1", "4", "James Netflix Binging", "20"];
+  const user_pool_expenseValues3 = ["3", "4", "4", "Anu loves Gas", "100"];
   const userPool_balanceValues1 = ["1", "1", "{{1,-10},{2,-30},{3,0},{4,40}}"];
   const user_pool_statementValues1 = ["1", "1", "1", "-10"];
   const user_pool_statementValues2 = ["1", "2", "1", "-30"];
