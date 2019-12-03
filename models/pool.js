@@ -151,7 +151,7 @@ exports.getBE = async (data) => {
 
     //----------Get Balances----------//
     const getUserBalancesQuery = `SELECT balances FROM "user_pool_balance" WHERE pool_id = $1 ORDER BY date DESC LIMIT 1`;
-    const getUserBalancesValues = [poolId];
+    const getUserBalancesValues = [1]; //this is hardCoded
     const balances = await db.query(getUserBalancesQuery, getUserBalancesValues);
     const balanceInfo = balances.rows[0].balances;
 

@@ -4,17 +4,19 @@ const db = require("../db");
 
 exports.newPayment = async (payload) => {
   //---get original balance---//
-  const getBalances = await db.query(`SELECT balances from user_pool_balance WHERE pool_id = ${payload.pool_id}`);
+  const getBalances = await db.query(`SELECT balances from user_pool_balance WHERE pool_id = 1`); //poolid is hardcoded
   try {
 
   //---update the Balance---//
     const updatedUserBalance = getBalances.rows.map((users) => {
       const { balances } = users;
       const changedBalances =balances.map((user)=>{
+        // console.log('payload', payload, 'payload',user, 'user', user[0], 'user[0]')
         if (user[0] === payload.updated_by_user) {
           const updatedAmount = user[1]+parseFloat(payload.payment)
           return user[1] = [payload.updated_by_user,updatedAmount]
         } else {
+          const user = [payload.updated_by_user, payload.payment]
           return user
         }
       })
@@ -26,8 +28,8 @@ exports.newPayment = async (payload) => {
     await db.query(insertUpdatedBalance, balanceValues);
     console.log("Added pool payment");
   //---add payment into user_pool_statement table----//
-    const statementAddedPayment = `INSERT INTO "user_pool_statement" (pool_id, user_id, statement_date, due_date, paid_date, amount) VALUES ($1, $2, $3, $4, $5, $6) `
-    const statementAddedPaymentValues = [payload.pool_id, payload.updated_by_user,new Date, new Date, new Date, payload.payment]
+    const statementAddedPayment = `INSERT INTO "user_pool_statement" (pool_id, user_id, statement_date, due_date, paid_date, amount, status) VALUES ($1, $2, $3, $4, $5, $6, $7) `
+    const statementAddedPaymentValues = [payload.pool_id, payload.updated_by_user,new Date, new Date, new Date, payload.payment, payload.status]
     await db.query(statementAddedPayment, statementAddedPaymentValues)
     console.log('added Statement Stamp')
   } catch (e) {

@@ -23,20 +23,17 @@ exports.drop = async () => {
 
   await db.query(`DROP TABLE IF EXISTS "pool"`, []); 
   console.log("dropped pool");
-<<<<<<< HEAD
 
   await db.query(`DROP TABLE IF EXISTS "messages"`, []); 
   console.log("dropped messages");
 
   await db.query(`DROP TABLE IF EXISTS "statement_messages"`, []); 
   console.log("dropped statement_messages");
-=======
   
   await db.query(`DROP TABLE IF EXISTS "user_pool_statement_history"`, []); 
   console.log("dropped user_pool_statement_history");
   
 
->>>>>>> 75dc85750cbb8149cc14f501ee69b1a209cf540e
 };
 
 exports.build = async () => {
@@ -50,15 +47,11 @@ exports.build = async () => {
       created_on TIMESTAMP NOT NULL)`,
     []);
   console.log("created user");
-
+//id may have to be unique
   await db.query(
     `CREATE TABLE "pool"(
-<<<<<<< HEAD
-      id SERIAL UNIQUE PRIMARY KEY,
-=======
-      id SERIAL PRIMARY KEY,
+      id SERIAL PRIMARY KEY, 
       admin_id VARCHAR(50) NOT NULL,
->>>>>>> 75dc85750cbb8149cc14f501ee69b1a209cf540e
       name VARCHAR(50) NOT NULL,
       frequency VARCHAR(50) NOT NULL,
       current_statement INTEGER,
@@ -160,15 +153,11 @@ exports.populate = async () => {
   const insertUserPool = `INSERT INTO "user_pool"(user_id, pool_id) VALUES ($1, $2)`;
   const insertPool_expense = `INSERT INTO "pool_expense"(pool_id, name, rule) VALUES ($1, $2, $3)`;
   const insertUserPool_balance = `INSERT INTO "user_pool_balance"(pool_id, updated_by_user, date, balances) VALUES ($1, $2, CURRENT_TIMESTAMP, $3)`;
-<<<<<<< HEAD
-  const insertUserPool_statement = `INSERT INTO "user_pool_statement"(pool_id, user_id, statement_date, due_date, paid_date, amount) VALUES ($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + interval'7 days', NULL, $3)`;
-  const insertUser_pool_expense = `INSERT INTO "user_pool_expense"(pool_expense_id, user_id, name, date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4)`;
-  const insertMessages = `INSERT INTO "messages"(sender_id, receiver_id, message, photoURL, statement_id, created_on, pool_id) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, $6)`;
-  const insertStatement_messages = `INSERT INTO "statement_messages"(statement_id, message_id) VALUES ($1, $2)`;
-=======
   const insertUser_pool_statement = `INSERT INTO "user_pool_statement"(pool_id, user_id, status, statement_date, due_date, paid_date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + interval'7 days', NULL, $4)`;
   const insertUser_pool_expense = `INSERT INTO "user_pool_expense"(pool_expense_id, user_id, statement_id, name, date, amount) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP, $5)`;
->>>>>>> 75dc85750cbb8149cc14f501ee69b1a209cf540e
+  const insertMessages = `INSERT INTO "messages"(sender_id, receiver_id, message, photoURL, statement_id, created_on, pool_id) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, $6)`;
+  const insertStatement_messages = `INSERT INTO "statement_messages"(statement_id, message_id) VALUES ($1, $2)`;
+  
 
   const userValues1 = [
     "y4Ac7s3VPddxkAnUOo5HA977d7x1",
@@ -206,21 +195,15 @@ exports.populate = async () => {
   const user_pool_expenseValues2 = ["2", "1", "4", "James Netflix Binging", "20"];
   const user_pool_expenseValues3 = ["3", "4", "4", "Anu loves Gas", "100"];
   const userPool_balanceValues1 = ["1", "1", "{{1,-10},{2,-30},{3,0},{4,40}}"];
-<<<<<<< HEAD
-  const userPool_statementValues1 = ["1", "1", "-10"];
-  const userPool_statementValues2 = ["1", "2", "-30"];
-  const userPool_statementValues3 = ["1", "3", "0"];
-  const userPool_statementValues4 = ["1", "4", "40"];
-  const messagesValues1 = ["1", "2", "your amazing!","https://picsum.photos/200", "3", "1"];
-  const messagesValues2 = ["1", "4", "your subpar", "https://picsum.photos/200", "4", "1"];
-  const statementMessagesValues1 = ["3", "1"];
-  const statementMessagesValues2 = ["4", "2"];
-=======
   const user_pool_statementValues1 = ["1", "1", "1", "-10"];
   const user_pool_statementValues2 = ["1", "2", "1", "-30"];
   const user_pool_statementValues3 = ["1", "3", "1", "0"];
   const user_pool_statementValues4 = ["1", "4", "1", "40"];
->>>>>>> 75dc85750cbb8149cc14f501ee69b1a209cf540e
+  const messagesValues1 = ["1", "2", "your amazing!","https://picsum.photos/200", "3", "1"];
+  const messagesValues2 = ["1", "4", "your subpar", "https://picsum.photos/200", "4", "1"];
+  const statementMessagesValues1 = ["3", "1"];
+  const statementMessagesValues2 = ["4", "2"];
+  
 
   try {
     await db.query(insertUser, userValues1);
