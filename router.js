@@ -16,6 +16,7 @@ router.post("/rule", controllers.newRule);
 router.put("/settings", checkIfAuthenticated, controllers.updateSettings);
 // router.post("/statement", checkIfAuthenticated, controllers.payment);
 router.post("/payment", controllers.newPayment);
+router.post("/messages", controllers.newMessage);
 
 // router.get("/articles", checkIfAuthenticated, async (_, res) => {
 //   return res.send("THIS WORKS");

@@ -24,7 +24,13 @@ exports.getPools = async (data) => {
     const user_pool = await db.query(getUserPoolsQuery, getUserPoolsValues);
     const poolId = user_pool.rows[0].pool_id;
     const userId = user_pool.rows[0].id;
-    
+
+    // //----------Get Statement Message Info----------//
+    // const getStatementMessagesQuery = `SELECT u.id, pool_id from "user_pool" up JOIN "user" u ON up.user_id = u.id WHERE u.uid = $1 ORDER BY 1 DESC LIMIT 1`;
+    // const getStatementMessagesValues = [data.uid];
+    // const user_pool = await db.query(getStatementMessagesQuery, getStatementMessagesValues);
+    // const poolId = user_pool.rows[0].pool_id;
+    // const userId = user_pool.rows[0].id;
     //----------Get User Info----------//
     const getUserQuery = `
       SELECT u.id, u.name, u.photourl 
@@ -74,6 +80,10 @@ exports.getPools = async (data) => {
     const getPoolValues = [poolId];
     const pool = await db.query(getPoolQuery, getPoolValues);
     const poolInfo = pool.rows;
+
+    // //---------Get Message Info----------//
+    // const getMessagesQuery = `SELECT * FROM "messages" WHERE pool_id = $1 and statement_id = $2 and user_id = $3`
+    // const getMessagesQueryValues = [poolId,userId]
 
     const dataSet = {
       userInfo,

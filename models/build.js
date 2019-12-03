@@ -45,7 +45,7 @@ exports.build = async () => {
 
   await db.query(
     `CREATE TABLE "pool"(
-      id SERIAL PRIMARY KEY,
+      id SERIAL UNIQUE PRIMARY KEY,
       name VARCHAR(50) NOT NULL,
       frequency VARCHAR(50) NOT NULL,
       statement_date TIMESTAMP NOT NULL,
@@ -58,7 +58,7 @@ exports.build = async () => {
   await db.query(
     `CREATE TABLE "user_pool"(
       user_id INTEGER,
-      pool_id INTEGER,
+      pool_id INTEGER REFERENCES pool(id),
       PRIMARY KEY (user_id, pool_id))`,
     []);
   console.log("created user_pool");
@@ -85,7 +85,7 @@ exports.build = async () => {
   await db.query(
     `CREATE TABLE "user_pool_statement"(
     id SERIAL UNIQUE NOT NULL,
-    pool_id INTEGER NOT NULL,
+    pool_id INTEGER NOT NULL REFERENCES pool(id),
     user_id INTEGER NOT NULL,
     statement_date TIMESTAMP NOT NULL,
     due_date TIMESTAMP NOT NULL,
@@ -115,14 +115,15 @@ exports.build = async () => {
       message VARCHAR(250) NOT NULL,
       photoURL VARCHAR(200),
       statement_id INTEGER REFERENCES user_pool_statement(id),
-      created_on TIMESTAMP NOT NULL)`,
+      created_on TIMESTAMP NOT NULL,
+      pool_id INTEGER NOT NULL)`,
     []);
   console.log("created messages");
 
   await db.query(
     `CREATE TABLE "statement_messages"(
       statement_id INTEGER,
-      message_id INTEGER REFERENCES messages(id),
+      message_id INTEGER,
       PRIMARY KEY (statement_id, message_id))`,
     []);
   console.log("created statement_messages");
@@ -137,7 +138,7 @@ exports.populate = async () => {
   const insertUserPool_balance = `INSERT INTO "user_pool_balance"(pool_id, updated_by_user, date, balances) VALUES ($1, $2, CURRENT_TIMESTAMP, $3)`;
   const insertUserPool_statement = `INSERT INTO "user_pool_statement"(pool_id, user_id, statement_date, due_date, paid_date, amount) VALUES ($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + interval'7 days', NULL, $3)`;
   const insertUser_pool_expense = `INSERT INTO "user_pool_expense"(pool_expense_id, user_id, name, date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4)`;
-  const insertMessages = `INSERT INTO "messages"(sender_id, receiver_id, message, photoURL, statement_id, created_on) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)`;
+  const insertMessages = `INSERT INTO "messages"(sender_id, receiver_id, message, photoURL, statement_id, created_on, pool_id) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, $6)`;
   const insertStatement_messages = `INSERT INTO "statement_messages"(statement_id, message_id) VALUES ($1, $2)`;
 
   const userValues1 = [
@@ -180,8 +181,8 @@ exports.populate = async () => {
   const userPool_statementValues2 = ["1", "2", "-30"];
   const userPool_statementValues3 = ["1", "3", "0"];
   const userPool_statementValues4 = ["1", "4", "40"];
-  const messagesValues1 = ["1", "2", "your amazing!","https://picsum.photos/200", "3"];
-  const messagesValues2 = ["1", "4", "your subpar", "https://picsum.photos/200", "4"];
+  const messagesValues1 = ["1", "2", "your amazing!","https://picsum.photos/200", "3", "1"];
+  const messagesValues2 = ["1", "4", "your subpar", "https://picsum.photos/200", "4", "1"];
   const statementMessagesValues1 = ["3", "1"];
   const statementMessagesValues2 = ["4", "2"];
 

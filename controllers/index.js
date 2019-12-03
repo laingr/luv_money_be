@@ -84,7 +84,6 @@ exports.newPayment = async (req, res) => {
   try {
     console.log('pay me bitch')
     const adjustments =  await models.paid_user_pool_balance.newPayment(req.body.payload);
-    // await models.user_pool_expense.balancedUserExpense(req.body, adjustments);
     res.status(201);
     res.send(adjustments);  
   } catch (e) {
@@ -112,5 +111,16 @@ exports.getStatement = async (req, res) => {
     res.json(statement);
   } catch (e) {
     console.log(e, "Error making something");
+  }
+};
+
+///------MESSAGES------///
+
+exports.newMessage = async (req, res) => {
+  try {
+    const message = await models.messages.newMessage(req.body.payload);
+    res.json(message);
+  } catch (e) {
+    console.log(e, "Error sending message");
   }
 };
