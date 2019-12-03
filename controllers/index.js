@@ -11,7 +11,29 @@ const db = require("../db");
 
 exports.createUser = auth.createUser;
 
+
+exports.getUser = async (req, res) => {
+  try {
+    console.log('isRunning')
+    const user = await models.user.getUser(req.query);
+    res.status(200);
+    res.json(user);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
 ///------POOLS------///
+
+exports.userPool = async (req, res) => {
+  try {
+    await models.user_pool.userPool(req.body);
+    res.status(201);
+    res.send();
+  } catch (e) {
+    console.log(e, "Error making user pool");
+  }
+};
 
 exports.newPool = async (req, res) => {
   try {
@@ -20,6 +42,17 @@ exports.newPool = async (req, res) => {
     res.send();
   } catch (e) {
     console.log(e, "Error making pool");
+  }
+};
+
+exports.getPool = async (req, res) => {
+  try {
+    console.log('isRunning')
+    const pool = await models.pool.getPool(req.query);
+    res.status(200);
+    res.json(pool);
+  } catch (e) {
+    console.log(e, "Error making something");
   }
 };
 

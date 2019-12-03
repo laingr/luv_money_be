@@ -40,6 +40,7 @@ exports.build = async () => {
   await db.query(
     `CREATE TABLE "pool"(
       id SERIAL PRIMARY KEY,
+      admin_id VARCHAR(50) NOT NULL,
       name VARCHAR(50) NOT NULL,
       frequency VARCHAR(50) NOT NULL,
       statement_date TIMESTAMP NOT NULL,
@@ -105,7 +106,7 @@ exports.build = async () => {
 exports.populate = async () => {
   //---INSERT DUMMY DATA---//
   const insertUser = `INSERT INTO "user"(uid, name, email, photoURL, created_on) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)`;
-  const insertPool = `INSERT INTO "pool"(name, frequency, statement_date, due_date, grace_period, created_on) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)`;
+  const insertPool = `INSERT INTO "pool"(admin_id, name, frequency, statement_date, due_date, grace_period, created_on) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)`;
   const insertUserPool = `INSERT INTO "user_pool"(user_id, pool_id) VALUES ($1, $2)`;
   const insertPool_expense = `INSERT INTO "pool_expense"(pool_id, name, rule) VALUES ($1, $2, $3)`;
   const insertUserPool_balance = `INSERT INTO "user_pool_balance"(pool_id, updated_by_user, date, balances) VALUES ($1, $2, CURRENT_TIMESTAMP, $3)`;
@@ -136,7 +137,7 @@ exports.populate = async () => {
     "a@talk.com",
     "https://picsum.photos/200"
   ];
-  const poolValues1 = ['LuvMoney Pool', "Monthly", "12-15-19 12:00:00", "12-20-19 12:00:00", "5 Days"];
+  const poolValues1 = ['y4Ac7s3VPddxkAnUOo5HA977d7x6', 'LuvMoney Pool', "Monthly", "12-15-19 12:00:00", "12-20-19 12:00:00", "5 Days"];
   const userPoolValues1 = ["1", "1"];
   const userPoolValues2 = ["2", "1"];
   const userPoolValues3 = ["3", "1"];
