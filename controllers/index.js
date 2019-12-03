@@ -5,6 +5,9 @@ const statements = require("./statements");
 const models = require("../models");
 const db = require("../db");
 
+// statements.newGracePeriodUpdates();
+// statements.countdownUpdates();
+// statements.overdueUpdates();
 
 
 ///------USERS------///
@@ -82,6 +85,7 @@ exports.newExpense = async (req, res) => {
   try {
     await models.user_pool_expense.newUserExpense(req.body.payload);
     const adjustments = await models.user_pool_balance.balance(req.body.payload);
+    console.log(adjustments)
     await models.user_pool_expense.balancedUserExpense(req.body.payload, adjustments);
     res.status(201);
     res.json();
