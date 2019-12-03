@@ -4,9 +4,9 @@ const db = require("../db");
 
 exports.newPool = async (pool) => {
   try {
-    const insertPool = `INSERT INTO "pool"(admin_id, name, frequency, statement_date, due_date, grace_period, created_on) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)`;
+    const insertPool = `INSERT INTO "pool"(admin_id, name, frequency, current_statement, next_statement_date, due_date, grace_period, created_on) VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP)`;
     const poolValues = [
-      pool.payload.admin_id, pool.payload.name, pool.payload.frequency, pool.payload.statement_date, pool.payload.due_date, pool.payload.grace_period
+      pool.payload.admin_id, pool.payload.name, pool.payload.frequency, pool.payload.current_statement, pool.payload.next_statement_date, pool.payload.due_date, pool.payload.grace_period
     ];
     await db.query(insertPool, poolValues);
     console.log("Added pool");
