@@ -3,7 +3,6 @@
 const db = require("../db");
 
 exports.balance = async (expense) => {
-  console.log(expense);
   try {
 
     //------Get Pool Rule------//

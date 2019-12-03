@@ -13,9 +13,10 @@ router.get("/one-pool", controllers.getPool);
 router.get("/pool", controllers.getPools);
 router.post("/user-pool", controllers.userPool);
 router.get("/poolBE", controllers.getBE);
-router.get("/statement", controllers.getStatement);
+router.get("/popup", controllers.getPopUp);
 router.post("/expense", controllers.newExpense);
 router.post("/rule", controllers.newRule);
+router.put("/rule", controllers.editRule);
 router.put("/settings", checkIfAuthenticated, controllers.updateSettings);
 // router.post("/statement", checkIfAuthenticated, controllers.payment);
 

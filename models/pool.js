@@ -72,8 +72,8 @@ exports.getPools = async (data) => {
     const balanceInfo = balances.rows[0] ? balances.rows[0].balances: [];
 
     //----------Get Recent Statement----------//
-    const getUserStatementQuery = `SELECT id, user_id, pool_id, statement_date, due_date, paid_date, amount FROM "user_pool_statement" WHERE pool_id = $1 and user_id = $2 ORDER BY statement_date DESC`;
-    const getUserStatementValues = [poolId, userId];
+    const getUserStatementQuery = `SELECT id, user_id, pool_id, status, statement_date, due_date, paid_date, amount FROM "user_pool_statement" WHERE user_id = $1 and pool_id = $2 ORDER BY statement_date DESC`;
+    const getUserStatementValues = [userId, poolId];
     const statement = await db.query(getUserStatementQuery, getUserStatementValues);
     const statementInfo = statement.rows;
 
@@ -146,7 +146,7 @@ exports.getBE = async (data) => {
     const balanceInfo = balances.rows[0].balances;
 
     //----------Get Recent Statement----------//
-    const getUserStatementQuery = `SELECT id, user_id, pool_id, statement_date, due_date, paid_date, amount FROM "user_pool_statement" WHERE pool_id = $1 and user_id = $2 ORDER BY statement_date DESC`;
+    const getUserStatementQuery = `SELECT id, user_id, pool_id, status, statement_date, due_date, paid_date, amount FROM "user_pool_statement" WHERE pool_id = $1 and user_id = $2 ORDER BY statement_date DESC`;
     const getUserStatementValues = [poolId, userId];
     const statement = await db.query(getUserStatementQuery, getUserStatementValues);
     const statementInfo = statement.rows;
