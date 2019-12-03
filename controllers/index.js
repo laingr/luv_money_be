@@ -5,13 +5,38 @@ const statements = require("./statements");
 const models = require('../models');
 const db = require("../db");
 
+// statements.newGracePeriodUpdates();
+// statements.countdownUpdates();
+// statements.overdueUpdates();
 
 
 ///------USERS------///
 
 exports.createUser = auth.createUser;
 
+
+exports.getUser = async (req, res) => {
+  try {
+    console.log('isRunning')
+    const user = await models.user.getUser(req.query);
+    res.status(200);
+    res.json(user);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
 ///------POOLS------///
+
+exports.userPool = async (req, res) => {
+  try {
+    await models.user_pool.userPool(req.body);
+    res.status(201);
+    res.send();
+  } catch (e) {
+    console.log(e, "Error making user pool");
+  }
+};
 
 exports.newPool = async (req, res) => {
   try {
@@ -20,6 +45,17 @@ exports.newPool = async (req, res) => {
     res.send();
   } catch (e) {
     console.log(e, "Error making pool");
+  }
+};
+
+exports.getPool = async (req, res) => {
+  try {
+    console.log('isRunning')
+    const pool = await models.pool.getPool(req.query);
+    res.status(200);
+    res.json(pool);
+  } catch (e) {
+    console.log(e, "Error making something");
   }
 };
 
@@ -49,6 +85,7 @@ exports.newExpense = async (req, res) => {
   try {
     await models.user_pool_expense.newUserExpense(req.body.payload);
     const adjustments = await models.user_pool_balance.balance(req.body.payload);
+    console.log(adjustments)
     await models.user_pool_expense.balancedUserExpense(req.body.payload, adjustments);
     res.status(201);
     res.json();
@@ -103,9 +140,27 @@ exports.newRule = async (req, res) => {
   }
 };
 
+exports.editRule = async (req, res) => {
+  try {
+    const rule = await models.pool_expense.updateRule([req.body.payload]);
+    res.json(rule);
+  } catch (e) {
+    console.log(e, "Error making something");
+  }
+};
+
 ///------STATEMENT------///
 
-exports.getStatement = async (req, res) => {
+exports.getPopUp = async (req,res) => {
+  if(req.query.type === 'rule') {
+    getRule(req,res)
+  } else {
+    console.log('statement');
+    getStatement(req,res)
+  }
+}
+
+const getStatement = async (req, res) => {
   try {
     const statement = await models.user_pool_statement.getStatement(req.query);
     res.json(statement);
@@ -122,5 +177,14 @@ exports.newMessage = async (req, res) => {
     res.json(message);
   } catch (e) {
     console.log(e, "Error sending message");
+  }
+};
+
+exports.getRule = async (req, res) => {
+  try {
+    const rule = await models.pool_expense.getRule(req.query);
+    res.json(rule);
+  } catch (e) {
+    console.log(e, "Error making something");
   }
 };
