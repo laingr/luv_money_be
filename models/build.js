@@ -6,34 +6,34 @@ exports.drop = async () => {
   await db.query(`DROP TABLE IF EXISTS "user_pool_balance"`, []);
   console.log("dropped user_pool_balance");
 
-  await db.query(`DROP TABLE IF EXISTS "user_pool_statement"`, []);
-  console.log("dropped user_pool_statement");
-
+  
   await db.query(`DROP TABLE IF EXISTS "user_pool_expense"`, []);
   console.log("dropped user_pool_expense");
   
   await db.query(`DROP TABLE IF EXISTS "pool_expense"`, []);
   console.log("dropped pool_expense");
   
-  await db.query(`DROP TABLE IF EXISTS "user_pool"`, []);
-  console.log("dropped user_pool");
-
+  
   await db.query(`DROP TABLE IF EXISTS "user"`, []);
   console.log("dropped user");
-
-  await db.query(`DROP TABLE IF EXISTS "pool"`, []); 
-  console.log("dropped pool");
-
+  
   await db.query(`DROP TABLE IF EXISTS "messages"`, []); 
   console.log("dropped messages");
-
+  
   await db.query(`DROP TABLE IF EXISTS "statement_messages"`, []); 
   console.log("dropped statement_messages");
   
   await db.query(`DROP TABLE IF EXISTS "user_pool_statement_history"`, []); 
   console.log("dropped user_pool_statement_history");
   
+  await db.query(`DROP TABLE IF EXISTS "user_pool"`, []);
+  console.log("dropped user_pool");
+  
+  await db.query(`DROP TABLE IF EXISTS "user_pool_statement"`, []);
+  console.log("dropped user_pool_statement");
 
+  await db.query(`DROP TABLE IF EXISTS "pool"`, []); 
+  console.log("dropped pool");
 };
 
 exports.build = async () => {
