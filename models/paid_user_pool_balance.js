@@ -4,24 +4,26 @@ const db = require("../db");
 
 exports.newPayment = async (payload) => {
   //---get original balance---//
-  const getBalances = await db.query(`SELECT balances from user_pool_balance WHERE pool_id = 1`); //poolid is hardcoded
+  const getBalances = await db.query(`SELECT balances from user_pool_balance WHERE pool_id = $1`); //poolid is hardcoded
   try {
 
   //---update the Balance---//
     const updatedUserBalance = getBalances.rows.map((users) => {
       const { balances } = users;
-      const changedBalances =balances.map((user)=>{
-        // console.log('payload', payload, 'payload',user, 'user', user[0], 'user[0]')
+      console.log(users)
+      console.log(balances, 'balances')
+      const changedBalances =balances.filter((user)=>{
+        console.log('payload', payload, 'payload',user, 'user', user[0], 'user[0]')
         if (user[0] === payload.updated_by_user) {
           const updatedAmount = user[1]+parseFloat(payload.payment)
           return user[1] = [payload.updated_by_user,updatedAmount]
         } else {
-          const user = [payload.updated_by_user, payload.payment]
           return user
         }
       })
       return changedBalances
     })
+    console.log(changedBalances, 'outside')
   //---insert Updated Balance into user_pool_balance table----//
     const insertUpdatedBalance = `UPDATE "user_pool_balance" SET balances = $1`;
     const balanceValues = (updatedUserBalance) ;
