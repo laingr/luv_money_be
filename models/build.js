@@ -43,7 +43,7 @@ exports.build = async () => {
       uid VARCHAR(100) NOT NULL,
       name VARCHAR(50) NOT NULL,
       email VARCHAR(355) UNIQUE NOT NULL,
-      photoURL VARCHAR(100),
+      photoURL VARCHAR(250),
       created_on TIMESTAMP NOT NULL)`,
     []);
   console.log("created user");

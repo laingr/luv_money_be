@@ -17,7 +17,10 @@ router.get("/popup", controllers.getPopUp);
 router.post("/expense", controllers.newExpense);
 router.post("/rule", controllers.newRule);
 router.put("/rule", controllers.editRule);
-router.put("/settings", checkIfAuthenticated, controllers.updateSettings);
+router.put("/settings", controllers.updateSettings);
+// router.post("/payment", controllers.newPayment);
+// router.post("/messages", controllers.newMessage);
+
 // router.post("/statement", checkIfAuthenticated, controllers.payment);
 router.post("/payment", controllers.newPayment);
 router.post("/messages", controllers.newMessage);

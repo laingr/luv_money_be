@@ -3,8 +3,6 @@
 const db = require("../db");
 
 exports.userPool = async (ids) => {
-  console.log('USer pool is ', ids);
-  console.log('User pool with payload ', ids.payload);
   try {
     const insertUserPool = `INSERT INTO "user_pool"(user_id, pool_id) VALUES ($1, $2)`;
     const userPoolValues = [
