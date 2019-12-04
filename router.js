@@ -22,9 +22,8 @@ router.put("/settings", controllers.updateSettings);
 // router.post("/messages", controllers.newMessage);
 
 // router.post("/statement", checkIfAuthenticated, controllers.payment);
-
-
-// router.post("/payment", checkIfAuthenticated, controllers.newPayment);
+router.post("/payment", controllers.newPayment);
+router.post("/messages", controllers.newMessage);
 
 // router.get("/articles", checkIfAuthenticated, async (_, res) => {
 //   return res.send("THIS WORKS");

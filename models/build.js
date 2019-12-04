@@ -6,28 +6,34 @@ exports.drop = async () => {
   await db.query(`DROP TABLE IF EXISTS "user_pool_balance"`, []);
   console.log("dropped user_pool_balance");
 
-  await db.query(`DROP TABLE IF EXISTS "user_pool_statement"`, []);
-  console.log("dropped user_pool_statement");
-
+  
   await db.query(`DROP TABLE IF EXISTS "user_pool_expense"`, []);
   console.log("dropped user_pool_expense");
   
   await db.query(`DROP TABLE IF EXISTS "pool_expense"`, []);
   console.log("dropped pool_expense");
   
-  await db.query(`DROP TABLE IF EXISTS "user_pool"`, []);
-  console.log("dropped user_pool");
-
+  
   await db.query(`DROP TABLE IF EXISTS "user"`, []);
   console.log("dropped user");
-
-  await db.query(`DROP TABLE IF EXISTS "pool"`, []); 
-  console.log("dropped pool");
+  
+  await db.query(`DROP TABLE IF EXISTS "messages"`, []); 
+  console.log("dropped messages");
+  
+  await db.query(`DROP TABLE IF EXISTS "statement_messages"`, []); 
+  console.log("dropped statement_messages");
   
   await db.query(`DROP TABLE IF EXISTS "user_pool_statement_history"`, []); 
   console.log("dropped user_pool_statement_history");
   
+  await db.query(`DROP TABLE IF EXISTS "user_pool"`, []);
+  console.log("dropped user_pool");
+  
+  await db.query(`DROP TABLE IF EXISTS "user_pool_statement"`, []);
+  console.log("dropped user_pool_statement");
 
+  await db.query(`DROP TABLE IF EXISTS "pool"`, []); 
+  console.log("dropped pool");
 };
 
 exports.build = async () => {
@@ -41,10 +47,10 @@ exports.build = async () => {
       created_on TIMESTAMP NOT NULL)`,
     []);
   console.log("created user");
-
+//id may have to be unique
   await db.query(
     `CREATE TABLE "pool"(
-      id SERIAL PRIMARY KEY,
+      id SERIAL PRIMARY KEY, 
       admin_id VARCHAR(50) NOT NULL,
       name VARCHAR(50) NOT NULL,
       frequency VARCHAR(50) NOT NULL,
@@ -60,7 +66,7 @@ exports.build = async () => {
   await db.query(
     `CREATE TABLE "user_pool"(
       user_id INTEGER,
-      pool_id INTEGER,
+      pool_id INTEGER REFERENCES pool(id),
       PRIMARY KEY (user_id, pool_id))`,
     []);
   console.log("created user_pool");
@@ -86,8 +92,8 @@ exports.build = async () => {
 
   await db.query(
     `CREATE TABLE "user_pool_statement"(
-    id SERIAL NOT NULL,
-    pool_id INTEGER NOT NULL,
+    id SERIAL UNIQUE NOT NULL,
+    pool_id INTEGER NOT NULL REFERENCES pool(id),
     user_id INTEGER NOT NULL,
     status VARCHAR NOT NULL,
     statement_date TIMESTAMP NOT NULL,
@@ -117,6 +123,27 @@ exports.build = async () => {
     user_adjusted DECIMAL(8,2) ARRAY)`,
     []);
   console.log("created user_pool_expense");
+
+  await db.query(
+    `CREATE TABLE "messages"(
+      id SERIAL UNIQUE PRIMARY KEY,
+      sender_id INTEGER NOT NULL,
+      receiver_id INTEGER NOT NULL,
+      message VARCHAR(250) NOT NULL,
+      photoURL VARCHAR(200),
+      statement_id INTEGER REFERENCES user_pool_statement(id),
+      created_on TIMESTAMP NOT NULL,
+      pool_id INTEGER NOT NULL)`,
+    []);
+  console.log("created messages");
+
+  await db.query(
+    `CREATE TABLE "statement_messages"(
+      statement_id INTEGER,
+      message_id INTEGER,
+      PRIMARY KEY (statement_id, message_id))`,
+    []);
+  console.log("created statement_messages");
 };
 
 exports.populate = async () => {
@@ -128,6 +155,9 @@ exports.populate = async () => {
   const insertUserPool_balance = `INSERT INTO "user_pool_balance"(pool_id, updated_by_user, date, balances) VALUES ($1, $2, CURRENT_TIMESTAMP, $3)`;
   const insertUser_pool_statement = `INSERT INTO "user_pool_statement"(pool_id, user_id, status, statement_date, due_date, paid_date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + interval'7 days', NULL, $4)`;
   const insertUser_pool_expense = `INSERT INTO "user_pool_expense"(pool_expense_id, user_id, statement_id, name, date, amount) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP, $5)`;
+  const insertMessages = `INSERT INTO "messages"(sender_id, receiver_id, message, photoURL, statement_id, created_on, pool_id) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, $6)`;
+  const insertStatement_messages = `INSERT INTO "statement_messages"(statement_id, message_id) VALUES ($1, $2)`;
+  
 
   const userValues1 = [
     "y4Ac7s3VPddxkAnUOo5HA977d7x1",
@@ -169,6 +199,11 @@ exports.populate = async () => {
   const user_pool_statementValues2 = ["1", "2", "1", "-30"];
   const user_pool_statementValues3 = ["1", "3", "1", "0"];
   const user_pool_statementValues4 = ["1", "4", "1", "40"];
+  const messagesValues1 = ["1", "2", "your amazing!","https://picsum.photos/200", "3", "1"];
+  const messagesValues2 = ["1", "4", "your subpar", "https://picsum.photos/200", "4", "1"];
+  const statementMessagesValues1 = ["3", "1"];
+  const statementMessagesValues2 = ["4", "2"];
+  
 
   try {
     await db.query(insertUser, userValues1);
@@ -191,6 +226,11 @@ exports.populate = async () => {
     await db.query(insertUser_pool_expense, user_pool_expenseValues1);
     await db.query(insertUser_pool_expense, user_pool_expenseValues2);
     await db.query(insertUser_pool_expense, user_pool_expenseValues3);
+    await db.query(insertMessages, messagesValues1);
+    await db.query(insertMessages, messagesValues2);
+    await db.query(insertStatement_messages, statementMessagesValues1);
+    await db.query(insertStatement_messages, statementMessagesValues2);
+
   } catch (e) {
     console.log(e);
   };
