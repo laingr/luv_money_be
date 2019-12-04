@@ -27,6 +27,7 @@
     "firebase-admin": "^8.8.0",
     "firebase-service": "^4.0.108",
     "moment": "^2.24.0",
+    "ngrok": "^3.2.5",
     "pg": "^7.14.0"
   },
   "devDependencies": {
