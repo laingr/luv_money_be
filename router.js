@@ -18,7 +18,7 @@ router.post("/expense", controllers.newExpense);
 router.post("/rule", controllers.newRule);
 router.put("/rule", controllers.editRule);
 router.put("/settings", controllers.updateSettings);
-// router.post("/payment", controllers.newPayment);
+router.post("/payment", controllers.newPayment);
 // router.post("/messages", controllers.newMessage);
 
 // router.post("/statement", checkIfAuthenticated, controllers.payment);

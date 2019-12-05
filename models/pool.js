@@ -85,7 +85,8 @@ exports.getPools = async (data) => {
     const getPoolRuleSettingsQuery = `
       SELECT *
       FROM "pool_expense"
-      WHERE pool_id = $1`;
+      WHERE pool_id = $1
+      AND id > 11`; //for eliminating payment options from dropdown
     const getPoolRuleSettingsValues = [poolId];
     const poolRuleSettings = await db.query(getPoolRuleSettingsQuery, getPoolRuleSettingsValues);
     const poolRuleSettingsInfo = poolRuleSettings.rows;
@@ -173,7 +174,8 @@ exports.getBE = async (data) => {
       const getPoolRuleSettingsQuery = `
         SELECT *
         FROM "pool_expense"
-        WHERE pool_id = $1`;
+        WHERE pool_id = $1
+        AND id > 11`;
       const getPoolRuleSettingsValues = [poolId];
       const poolRuleSettings = await db.query(getPoolRuleSettingsQuery, getPoolRuleSettingsValues);
       const poolRuleSettingsInfo = poolRuleSettings.rows;

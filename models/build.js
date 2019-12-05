@@ -203,7 +203,7 @@ exports.populate = async () => {
   const messagesValues2 = ["1", "4", "your subpar", "https://picsum.photos/200", "4", "1"];
   const statementMessagesValues1 = ["3", "1"];
   const statementMessagesValues2 = ["4", "2"];
-  
+
 
   try {
     await db.query(insertUser, userValues1);

@@ -12,6 +12,7 @@ exports.balance = async (expense) => {
       where pe.id = $1`;
     const expenseValues = [expense.pool_expense_id];
     const rules = await db.query(queryExpense, expenseValues);
+    console.log(expense);
     const pool_id = rules.rows[0].pool_id;
     const appliedRules = rules.rows[0].rule;
     console.log('applied rules',appliedRules);
@@ -22,7 +23,6 @@ exports.balance = async (expense) => {
     const prevUserBalances = await db.query(prevBalances, balanceValues);
     let balances = [];
     if (prevUserBalances.rows.length === 0){ //for new groups - todo update when invited
-      console.log('HITTING');
       const users = `SELECT user_id FROM "user_pool" where pool_id = $1`;
       const initialBalanceValues = [pool_id];
       const usersToCreateBalance = await db.query(users, initialBalanceValues);
@@ -30,6 +30,14 @@ exports.balance = async (expense) => {
       let array = [];
       initialBalances.map(el=>array.push([el.user_id, 0]));
       balances = array;
+
+      // let rulesArray = [];
+      // for (let i=0; i<array.length; i++) {
+      //   const key = String(array[i][0]);
+      //   rulesArray.push({[key]:array});
+      //   rulesArray[i][1]=100
+      //   console.log(rulesArray);
+      // };
     } else {
       balances = prevUserBalances.rows[0].balances
     };

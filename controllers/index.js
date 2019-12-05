@@ -84,8 +84,9 @@ exports.getBE = async (req, res) => {
 exports.newExpense = async (req, res) => {
   try {
     await models.user_pool_expense.newUserExpense(req.body.payload);
+    console.log('REQUEST',req.body.payload);
     const adjustments = await models.user_pool_balance.balance(req.body.payload);
-    console.log(adjustments)
+    console.log('ADJUSTMENT',adjustments)
     await models.user_pool_expense.balancedUserExpense(req.body.payload, adjustments);
     res.status(201);
     res.json();
@@ -119,8 +120,9 @@ exports.getSettings = async (req, res) => {
 
 exports.newPayment = async (req, res) => {
   try {
-    console.log('pay me bitch')
-    const adjustments =  await models.paid_user_pool_balance.newPayment(req.body.payload);
+    console.log('pay me bitch');
+    const checkRule = await models.pool_expense.checkUserPayment(req.body.payload);
+    const adjustments =  await models.user_pool_expense.newPayment(req.body.payload);
     res.status(201);
     res.send(adjustments);  
   } catch (e) {
