@@ -10,10 +10,7 @@ exports.newPayment = async (payload) => {
   //---update the Balance---//
     const updatedUserBalance = getBalances.rows.map((users) => {
       const { balances } = users;
-      console.log(users)
-      console.log(balances, 'balances')
       const changedBalances =balances.filter((user)=>{
-        console.log('payload', payload, 'payload',user, 'user', user[0], 'user[0]')
         if (user[0] === payload.updated_by_user) {
           const updatedAmount = user[1]+parseFloat(payload.payment)
           return user[1] = [payload.updated_by_user,updatedAmount]
@@ -23,7 +20,6 @@ exports.newPayment = async (payload) => {
       })
       return changedBalances
     })
-    console.log(changedBalances, 'outside')
   //---insert Updated Balance into user_pool_balance table----//
     const insertUpdatedBalance = `UPDATE "user_pool_balance" SET balances = $1`;
     const balanceValues = (updatedUserBalance) ;

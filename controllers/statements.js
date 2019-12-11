@@ -11,6 +11,13 @@ const db = require("../db");
   //4 = LATE (After Grace Without Pay)
   //5 = HISTORY
 
+exports.runStatements = async () => {
+  const newStatementQuery = 
+  `INSERT INTO "pool_statements"()
+  VALUES()`;
+  const newStatementValues = [];
+}
+
 
 exports.newGracePeriodUpdates = async () => {
   const statements = await newStatements();
