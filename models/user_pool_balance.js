@@ -12,10 +12,8 @@ exports.balance = async (expense) => {
       where pe.id = $1`;
     const expenseValues = [expense.pool_expense_id];
     const rules = await db.query(queryExpense, expenseValues);
-    console.log(expense);
     const pool_id = rules.rows[0].pool_id;
     const appliedRules = rules.rows[0].rule;
-    console.log('applied rules',appliedRules);
     
     //------Get Previous Balances------//
     const prevBalances = `SELECT balances FROM "user_pool_balance" where pool_id = $1 ORDER BY date DESC limit 1`;

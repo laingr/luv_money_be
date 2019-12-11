@@ -12,7 +12,6 @@ exports.createUser = auth.createUser;
 
 exports.getUser = async (req, res) => {
   try {
-    console.log('isRunning')
     const user = await models.user.getUser(req.query);
     res.status(200);
     res.json(user);
@@ -45,7 +44,6 @@ exports.newPool = async (req, res) => {
 
 exports.getPool = async (req, res) => {
   try {
-    console.log('isRunning')
     const pool = await models.pool.getPool(req.query);
     res.status(200);
     res.json(pool);
@@ -79,9 +77,7 @@ exports.getBE = async (req, res) => {
 exports.newExpense = async (req, res) => {
   try {
     await models.user_pool_expense.newUserExpense(req.body.payload);
-    console.log('REQUEST',req.body.payload);
     const adjustments = await models.user_pool_balance.balance(req.body.payload);
-    console.log('ADJUSTMENT',adjustments)
     await models.user_pool_expense.balancedUserExpense(req.body.payload, adjustments);
     res.status(201);
     res.json();
@@ -115,7 +111,6 @@ exports.getSettings = async (req, res) => {
 
 exports.newPayment = async (req, res) => {
   try {
-    console.log('pay me bitch');
     const checkRule = await models.pool_expense.checkUserPayment(req.body.payload);
     const adjustments =  await models.user_pool_expense.newPayment(req.body.payload);
     res.status(201);
@@ -152,7 +147,6 @@ exports.getPopUp = async (req,res) => {
   if(req.query.type === 'rule') {
     getRule(req,res)
   } else {
-    console.log('statement');
     getStatement(req,res)
   }
 }

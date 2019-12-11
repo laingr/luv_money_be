@@ -9,7 +9,6 @@ exports.userPool = async (ids) => {
       ids.payload.user_id, ids.payload.pool_id
     ];
     await db.query(insertUserPool, userPoolValues);
-    console.log("Added user pool");
   } catch (e) {
     console.log(e, "Error adding new user pool");
   }

@@ -24,12 +24,10 @@ exports.newPayment = async (payload) => {
     const insertUpdatedBalance = `UPDATE "user_pool_balance" SET balances = $1`;
     const balanceValues = (updatedUserBalance) ;
     await db.query(insertUpdatedBalance, balanceValues);
-    console.log("Added pool payment");
   //---add payment into user_pool_statement table----//
     const statementAddedPayment = `INSERT INTO "user_pool_statement" (pool_id, user_id, statement_date, due_date, paid_date, amount, status) VALUES ($1, $2, $3, $4, $5, $6, $7) `
     const statementAddedPaymentValues = [payload.pool_id, payload.updated_by_user,new Date, new Date, new Date, payload.payment, payload.status]
     await db.query(statementAddedPayment, statementAddedPaymentValues)
-    console.log('added Statement Stamp')
   } catch (e) {
     console.log(e, "Error adding new pool payment");
   }

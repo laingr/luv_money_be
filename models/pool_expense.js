@@ -10,7 +10,6 @@ exports.newRule = async (payload) => {
       payload[0].pool_id, payload[0].name, array
     ];
     await db.query(insertRule, ruleValues);
-    console.log("Added pool rule");
   } catch (e) {
     console.log(e, "Error adding new pool rule");
   }
@@ -28,21 +27,18 @@ exports.updateRule = async (payload) => {
     if (updateType === ""){
       return ("No update required");
     } else if (updateType ==="name") {
-      console.log('Name changed');
       const updateName = `UPDATE "pool_expense" SET name = ($2) WHERE id = ($1)`;
       const ruleValues = [payload[0].id, payload[0].name];  
       return await db.query(updateName, ruleValues);
     } else if (updateType === 'rule') {
       const updateRule = `UPDATE "pool_expense" SET rule = ($2) WHERE id = ($1)`;
       const ruleValues = [payload[0].id, array];  
-      console.log('Rule changed to', payload, updateRule, ruleValues);
       return await db.query(updateRule, ruleValues);
     } else if (updateType === 'namerule') {
       const updateNameRule = `UPDATE "pool_expense" SET name = ($2), rule = ($3) WHERE id = ($1)`;
       const ruleValues = [
         payload[0].id, payload[0].name, array||[]
       ];  
-      console.log('Name and rule changed');
       return await db.query(updateNameRule, ruleValues);
         }
   } catch (e) {
@@ -57,7 +53,6 @@ exports.getRule = async (payload) => {
       payload.rule_id
     ];
     const ruleInfo = await db.query(getRule, ruleValues);
-    console.log("Fetched pool rule");
     return ruleInfo.rows[0];
   } catch (e) {
     console.log(e, "Error fetching pool rule");

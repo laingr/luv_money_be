@@ -4,14 +4,9 @@ const db = require("../db");
 
 exports.newUser = async user => {
   try {
-    console.log(user.payload.email);
     const insertUser = `INSERT INTO "user"(uid, name, email, photourl, created_on) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)`;
     const userValues = [user.payload.uid, user.payload.name, user.payload.email, user.payload.photourl];
-
-    console.log(insertUser);
     await db.query(insertUser, userValues);
-    console.log("Added user");
-
   } catch (e) {
     console.log(e, "Error adding new user");
   }
