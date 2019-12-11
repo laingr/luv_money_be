@@ -5,11 +5,6 @@ const statements = require("./statements");
 const models = require('../models');
 const db = require("../db");
 
-// statements.newGracePeriodUpdates();
-// statements.countdownUpdates();
-// statements.overdueUpdates();
-
-
 ///------USERS------///
 
 exports.createUser = auth.createUser;

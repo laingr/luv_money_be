@@ -31,21 +31,9 @@ exports.balance = async (expense) => {
       initialBalances.map(el=>array.push([el.user_id, 0]));
       balances = array;
 
-      // let rulesArray = [];
-      // for (let i=0; i<array.length; i++) {
-      //   const key = String(array[i][0]);
-      //   rulesArray.push({[key]:array});
-      //   rulesArray[i][1]=100
-      //   console.log(rulesArray);
-      // };
     } else {
       balances = prevUserBalances.rows[0].balances
     };
-    
-    // if (balances.length < appliedRules.length) { //todo need to validate new members after first expense
-    //   console.log('LENGTH ISSUE');
-    //   // balances.push()
-    // }
     
     //------Map Added Expense to New Rule------//
     const adjustments = appliedRules.map(el => el[1]*expense.amount*.01);

@@ -19,14 +19,7 @@ router.post("/rule", controllers.newRule);
 router.put("/rule", controllers.editRule);
 router.put("/settings", controllers.updateSettings);
 router.post("/payment", controllers.newPayment);
-// router.post("/messages", controllers.newMessage);
-
-// router.post("/statement", checkIfAuthenticated, controllers.payment);
 router.post("/payment", controllers.newPayment);
 router.post("/messages", controllers.newMessage);
-
-// router.get("/articles", checkIfAuthenticated, async (_, res) => {
-//   return res.send("THIS WORKS");
-// });
 
 module.exports = router;

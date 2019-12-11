@@ -9,9 +9,6 @@ exports.newPool = async (pool) => {
       pool.payload.admin_id, pool.payload.name, pool.payload.frequency, pool.payload.current_statement, pool.payload.next_statement_date, pool.payload.due_date, pool.payload.grace_period
     ];
     const poolId = await db.query(insertPool, poolValues);
-    // const initialBalanceQuery = 'INSERT INTO "user_pool_balance"(pool_id, updated_by_user, date, balances) VALUES ($1, $2, CURRENT_TIMESTAMP, $3';
-    // const initialBalanceValues = [poolId.id, poolId.admin_id, "{{1,0}}"];
-    // await db.query(initialBalanceQuery,initialBalanceValues);
     const initialStatementQuery = `INSERT INTO "user_pool_statement"(pool_id, user_id, status, statement_date, due_date, paid_date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP + interval'30 days', CURRENT_TIMESTAMP + interval'35 days', NULL, $4)`;
     const initialStatementValues = [poolId.id, poolId.admin_id, 2, 0];
     await db.query(initialStatementQuery,initialStatementValues);
@@ -51,16 +48,6 @@ exports.getPools = async (data) => {
     const thisUser = await db.query(getThisUserQuery, getThisUserValues);
     const thisUserInfo = thisUser.rows;
 
-
-
-    // //----------Get Statement Message Info----------//
-    // const getStatementMessagesQuery = `SELECT u.id, pool_id from "user_pool" up JOIN "user" u ON up.user_id = u.id WHERE u.uid = $1 ORDER BY 1 DESC LIMIT 1`;
-    // const getStatementMessagesValues = [data.uid];
-    // const user_pool = await db.query(getStatementMessagesQuery, getStatementMessagesValues);
-    // const poolId = user_pool.rows[0].pool_id;
-    // const userId = user_pool.rows[0].id;
- 
-    
     //----------Get ALL User Info----------//
 
     const getUserQuery = `
@@ -114,9 +101,6 @@ exports.getPools = async (data) => {
     const poolInfo = pool.rows;
 
     // //---------Get Message Info----------//
-    // const getMessagesQuery = `SELECT * FROM "messages" WHERE pool_id = $1 and statement_id = $2 and user_id = $3`
-    // const getMessagesQueryValues = [poolId,userId]
-
     const dataSet = {
       thisUserInfo,
       userInfo,
@@ -124,7 +108,7 @@ exports.getPools = async (data) => {
       statementInfo,
       poolInfo,
       poolSettingsInfo,
-      poolRuleSettingsInfo
+      poolRuleSettingsInfo,
     };
     return dataSet;
 

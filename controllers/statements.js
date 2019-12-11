@@ -16,9 +16,6 @@ exports.runStatements = async () => {
   `INSERT INTO "pool_statements"()
   VALUES()`;
   const newStatementValues = [];
-
-  
-
 }
 
 
