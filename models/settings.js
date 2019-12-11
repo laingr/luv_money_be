@@ -9,7 +9,6 @@ exports.updateSettings = async (pool) => {
       pool.frequency, pool.due_date, pool.id
     ];
     await db.query(updateFrequencey, frequencyValue);
-    console.log("Updated Settings");
   } catch (e) {
     console.log(e, "Error updating the settings");
   }

@@ -12,7 +12,6 @@ exports.newPool = async (pool) => {
     const initialStatementQuery = `INSERT INTO "user_pool_statement"(pool_id, user_id, status, statement_date, due_date, paid_date, amount) VALUES ($1, $2, $3, CURRENT_TIMESTAMP + interval'30 days', CURRENT_TIMESTAMP + interval'35 days', NULL, $4)`;
     const initialStatementValues = [poolId.id, poolId.admin_id, 2, 0];
     await db.query(initialStatementQuery,initialStatementValues);
-    console.log("Added pool and statement");
   } catch (e) {
     console.log(e, "Error adding new pool");
   }
@@ -21,7 +20,6 @@ exports.newPool = async (pool) => {
 exports.getPool = async (data) => {
   try {
     //----------Get single Pool----------//
-    //console.log('Data ', data);
     const getUserPoolsQuery = `SELECT id from "pool" WHERE admin_id = $1`;
     const getUserPoolsValues = [data.admin_id];
     const pool_id = await db.query(getUserPoolsQuery, getUserPoolsValues);
