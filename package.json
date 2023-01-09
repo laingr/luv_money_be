@@ -24,7 +24,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "firebase-admin": "^8.8.0",
+    "firebase-admin": "^11.4.1",
     "firebase-service": "^4.0.108",
     "moment": "^2.24.0",
     "ngrok": "^3.2.5",
